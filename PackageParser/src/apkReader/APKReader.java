@@ -8,12 +8,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -28,8 +35,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import android.content.res.AXMLPrinter;
-
-;
 
 public class APKReader {
 	private static final Logger log = Logger.getLogger("APKReader");
@@ -217,7 +222,7 @@ public class APKReader {
 					if (iconPaths.size() > 0)
 						// TODO For every icon in the file
 						for (String iconFileName : iconPaths) {
-							if (iconFileName != null) {
+							if (iconFileName != null&&entryList.contains(iconFileName)) {
 								info.iconFileNameToGet = iconFileName;
 								break;
 							}
@@ -297,7 +302,8 @@ public class APKReader {
 		String unzippedXMLFile = GetTempFile("apktemp_", ".xml");
 
 		ZipEntry entry;
-		String XMLfile;
+		String rawXMl;
+		String xml="";
 
 		while ((entry = zis.getNextEntry()) != null) {
 			if (info.rsaCertFileBytes == null)
@@ -322,18 +328,35 @@ public class APKReader {
 		fis.close();
 
 		// extract html
-
-		XMLfile = AXMLPrinter.getString(packedXMLFile);
-
+		rawXMl = AXMLPrinter.getString(packedXMLFile);
 		File destFile = new File(unzippedXMLFile);
-
 		FileWriter fileToWrite = new FileWriter(destFile, true);
 
-		fileToWrite.write(XMLfile.replace("&", "&amp;"));
-
+		for(String line:rawXMl.split("\n")){
+			/* Deal with invalid character &*/
+			line=line.replace("&", "&amp;");
+			/* Deal with android:versionName="1.0.3.7-969a */
+			line=line.replace((char)0, ' ');
+			/* Deal with versionName="0.1.8 "Archer"" */
+			int charCount = line.replaceAll("[^\"]", "").length();
+			
+			if(charCount>2&&!line.contains("xml version")&&line.endsWith("\"")){
+				Pattern p = Pattern.compile("(.+[\\w:=]+)\\\"(.+)\\\"");
+				Matcher m = p.matcher(line);
+				if(m.find()){
+					line=m.group(1)+'"'+m.group(2).replace('"', '\'')+'"';
+					System.out.println(line);					
+				}
+			}
+			xml+=line+"\n";
+		}
+		
+		fileToWrite.write(xml);
 		fileToWrite.flush();
 		fileToWrite.close();
+		System.out.println("AndroidManifest.xml"+file+","+destFile);
 
+		System.out.println("Entry count:"+getAllEntries(new JarFile(file)));
 		ReadInfo(unzippedXMLFile, info);
 		if (!info.hasIcon) {
 			fis = new FileInputStream(file);
@@ -348,9 +371,9 @@ public class APKReader {
 			fis.close();
 		}
 
-//		destFile.delete();
-//		File xmlSrc = new File(packedXMLFile);
-//		xmlSrc.delete();
+		// destFile.delete();
+		// File xmlSrc = new File(packedXMLFile);
+		// xmlSrc.delete();
 
 		// System.out.println("Read Success!");
 		return info;
@@ -431,4 +454,73 @@ public class APKReader {
 		return iconFile.getPath();
 	}
 
+	public static int basicTest(String apkPath) throws IOException {
+		int ret = APKInfo.FINE;
+		JarFile apkJar = null;
+		try {
+			int errCode = APKInfo.FINE;
+			apkJar = new JarFile(apkPath, true);
+			if ((errCode = verify(apkJar)) != APKInfo.FINE)
+				ret = errCode;
+			else if (apkJar.getJarEntry("AndroidManifest.xml") == null)
+				ret = APKInfo.NULL_MANIFEST;
+			else if (apkJar.getJarEntry("resources.arsc") == null)
+				ret = APKInfo.NULL_RESOURCES;
+			else if (apkJar.getJarEntry("classes.dex") == null)
+				ret = APKInfo.NULL_DEX;
+			else if (apkJar.getJarEntry("META-INF/MANIFEST.MF") == null)
+				ret = APKInfo.NULL_METAINFO;
+		} catch (Exception e) {
+			ret = APKInfo.BAD_JAR;
+			e.printStackTrace();
+		} finally {
+			if (apkJar != null) {
+				apkJar.close();
+				apkJar = null;
+			}
+			System.gc();
+		}
+		return ret;
+	}
+	
+	public List<String> entryList=new ArrayList<String>();
+
+	public int getAllEntries(JarFile jar){
+		int count = 0;
+		byte[] buf = new byte[2048];
+		Enumeration<JarEntry> entries = jar.entries();
+		while (entries.hasMoreElements()) {
+			JarEntry entry = entries.nextElement();
+			entryList.add(entry.getName());
+		}
+		return entryList.size();
+	}
+	
+	private static int verify(JarFile jar) throws IOException {
+		int ret = APKInfo.FINE;
+
+		int count = 0;
+		byte[] buf = new byte[2048];
+		Enumeration<JarEntry> entries = jar.entries();
+		while (entries.hasMoreElements()) {
+			JarEntry entry = entries.nextElement();
+			InputStream is = null;
+			try {
+				is = jar.getInputStream(entry);
+				while ((count = is.read(buf)) != -1)
+					;
+			} catch (SecurityException se) {
+				ret = APKInfo.BAD_JAR;
+				break;
+			} finally {
+				if (is != null)
+					is.close();
+			}
+		}
+		if (jar != null) {
+			jar.close();
+		}
+		System.gc();
+		return ret;
+	}
 }
