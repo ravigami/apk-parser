@@ -30,83 +30,44 @@ public class ApkReaderTest {
 	public static Hashtable<Integer, List<String>> errorApks = new Hashtable<Integer, List<String>>();
 
 	public int testApk(String apkPath) {
-		int ret = APKInfo.FINE;
 		APKReader apkReader = new APKReader();
 		APKInfo apkInfo = new APKInfo();
-		String filePath = apkPath;
-		try {
-			apkReader.read(filePath, apkInfo);
-			int errCode;
-			if ((errCode = apkInfo.isValid()) != APKInfo.FINE) {
-				ret = errCode;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			ret = APKInfo.BAD_READ_INFO;
-		}
-		System.out.println(apkInfo);
-		return ret;
+
+		int errCode = apkReader.read(apkPath, apkInfo);
+		return errCode;
 	}
 
 	public static void main(String[] args) throws IOException {
-		APK_FOLDER = args[0];
-		SUCCESS_FOLDER = "T:\\apks\\fin\\";
-		FAILED_FOLDER = "T:\\apks\\fail\\";
-		TODO_FOLDER = "";
-		for (int i = 0; i < 30; i++) {
+		APK_FOLDER = "T:\\apks\\fin";
+
+		for (int i = 0; i < 20; i++) {
 			errorApks.put(i, new ArrayList<String>());
 		}
 
 		ApkReaderTest test = new ApkReaderTest();
 
-		boolean isDebug = false;
-		if (isDebug) {
-			// for(String testApk:testApks){
-			String tmpApk = "";
-			System.out.println(tmpApk);
-			int errC = APKReader.basicTest(tmpApk);
-			if (errC != APKInfo.FINE) {
-				System.err.println(errC);
-				return;
-			}
-			errC = test.testApk(tmpApk);
-			if (errC != APKInfo.FINE) {
-				System.err.println(errC);
-			}
-			// }
-			return;
-		}
-
 		File[] files = (new File(APK_FOLDER)).listFiles();
 		int count = 0;
 		int errCode;
 		for (File file : files) {
-
 			String fileName = file.getAbsolutePath();
 			System.out.println((count++) + "." + fileName);
 
-//			if ((errCode = APKReader.basicTest(fileName)) != APKInfo.FINE) {
-//				System.out.println("Basic Invalid apk " + fileName
-//						+ ". Error code:" + errCode);
-//			}
-//			 else if (
 			errCode = test.testApk(fileName);
-//			 System.out.println("Invalid apk " + fileName + ". Error code:"
-//			 + errCode);
-//			 }
-			
-			List<String> fs=errorApks.get(errCode);
+
+			List<String> fs = errorApks.get(errCode);
 			fs.add(file.getAbsolutePath());
 			errorApks.put(errCode, fs);
 
-//			if (APKInfo.NULL_MANIFEST == errCode || APKInfo.BAD_JAR == errCode
-//					|| APKInfo.BAD_CERT == errCode) {
-//				boolean success = (new File(file.getAbsolutePath()))
-//						.renameTo(new File(FAILED_FOLDER + file.getName()));
-//				if (!success) {
-//					System.err.println(fileName);
-//				}
-//			} else 
+			// if (APKInfo.NULL_MANIFEST == errCode || APKInfo.BAD_JAR ==
+			// errCode
+			// || APKInfo.BAD_CERT == errCode) {
+			// boolean success = (new File(file.getAbsolutePath()))
+			// .renameTo(new File(FAILED_FOLDER + file.getName()));
+			// if (!success) {
+			// System.err.println(fileName);
+			// }
+			// } else
 			if (APKInfo.FINE == errCode) {
 				boolean success = file.renameTo(new File(SUCCESS_FOLDER
 						+ file.getName() + file.getName().hashCode()));

@@ -36,6 +36,7 @@ public class APKInfo {
 	public byte[] sfCertFileBytes;
 	public String mfCertFileName;
 	public byte[] mfcCertFileBytes;
+	public String manifestFileName;
 	public byte[] manifestFileBytes;
 	public boolean hasIcon;
 	public boolean supportSmallScreens;
