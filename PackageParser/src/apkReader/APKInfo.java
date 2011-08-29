@@ -2,7 +2,7 @@ package apkReader;
 
 import java.util.*;
 
-public class APKInfo {
+public class ApkInfo {
 
 	public static int FINE = 0;
 	public static int NULL_VERSION_CODE = 1;
@@ -28,8 +28,8 @@ public class APKInfo {
 	public String targetSdkVersion;
 	public String packageName;
 	public List<String> Permissions;
-	public String iconFileName;
-	public String iconFileNameToGet;
+	public List<String> iconFileName;
+	public List<String> iconFileNameToGet;
 	public String rsaCertFileName;
 	public byte[] rsaCertFileBytes;
 	public String sfCertFileName;
@@ -43,6 +43,7 @@ public class APKInfo {
 	public boolean supportNormalScreens;
 	public boolean supportLargeScreens;
 	public boolean supportAnyDensity;
+	public Map<String, ArrayList<String>> resStrings;
 
 	public static boolean supportSmallScreen(byte[] dpi) {
 		if (dpi[0] == 1)
@@ -79,7 +80,7 @@ public class APKInfo {
 		return dpi;
 	}
 
-	public APKInfo() {
+	public ApkInfo() {
 		hasIcon = false;
 		supportSmallScreens = false;
 		supportNormalScreens = false;
@@ -100,15 +101,26 @@ public class APKInfo {
 		return "versionCode\t" + versionCode + "\r\n" + "versionName\t"
 				+ versionName + "\r\n" + "Permissions\t" + Permissions + "\r\n"
 				+ "iconFileName\t" + iconFileName + "\r\n"
-				+ "iconFileNameToGet\t" + iconFileNameToGet + "\r\n"
-				+ "rsaCertFileName\t" + rsaCertFileName + "\r\n"
-				+ "sfCertFileName\t" + sfCertFileName + "\r\n"
-				+ "mfCertFileName\t" + mfCertFileName + "\r\n"
+				+ "iconName\t" + iconFileNameToGet + "\r\n"
 				+ "supportSmallScreens\t" + supportSmallScreens + "\r\n"
 				+ "supportNormalScreens\t" + supportNormalScreens + "\r\n"
 				+ "supportLargeScreens\t" + supportLargeScreens + "\r\n"
 				+ "supportAnyDensity\t" + supportAnyDensity + "\r\n"
-				+ "hasIcon\t" + hasIcon + "\r\n";
+				+ "hasIcon\t" + hasIcon + "\r\n"
+				+ "manifestFileName\t"+manifestFileName + "\r\n"
+				+ "resStrings\t"+resStrings.size() + "\r\n";
+	}
+
+	private boolean isReference(List<String> strs) {
+		try {
+			for (String str : strs) {
+				if(isReference(str))
+					return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	private boolean isReference(String str) {
@@ -144,20 +156,20 @@ public class APKInfo {
 			return NULL_ICON;
 		} else if (iconFileNameToGet == null) {
 			return NULL_ICON;
-		} else if (rsaCertFileName == null) {
-			return NULL_CERT_FILE;
-		} else if (rsaCertFileBytes == null) {
-			return BAD_CERT;
-		} else if (sfCertFileName == null) {
-			return NULL_SF_FILE;
-		} else if (sfCertFileBytes == null) {
-			return BAD_SF;
-		} else if (mfCertFileName == null) {
-			return NULL_CERT_FILE;
-		} else if (mfcCertFileBytes == null) {
-			return BAD_CERT;
-		} else if (manifestFileBytes == null) {
-			return NULL_MANIFEST;
+//		} else if (rsaCertFileName == null) {
+//			return NULL_CERT_FILE;
+//		} else if (rsaCertFileBytes == null) {
+//			return BAD_CERT;
+//		} else if (sfCertFileName == null) {
+//			return NULL_SF_FILE;
+//		} else if (sfCertFileBytes == null) {
+//			return BAD_SF;
+//		} else if (mfCertFileName == null) {
+//			return NULL_CERT_FILE;
+//		} else if (mfcCertFileBytes == null) {
+//			return BAD_CERT;
+//		} else if (manifestFileBytes == null) {
+//			return NULL_MANIFEST;
 		} else if (hasIcon == false) {
 			return NULL_ICON;
 		}

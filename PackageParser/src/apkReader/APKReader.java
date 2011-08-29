@@ -1,9 +1,8 @@
 package apkReader;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -13,16 +12,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,7 +33,7 @@ import org.xml.sax.SAXException;
 
 import android.content.res.AXMLPrinter;
 
-public class APKReader {
+public class ApkReader {
 	private static final Logger log = Logger.getLogger("APKReader");
 
 	static final int BUFFER = 2048;
@@ -49,7 +46,10 @@ public class APKReader {
 	String[] TAGS = { "manifest", "application", "activity" };
 	String[] ATTRS = { "android:", "a:", "activity:", "_:" };
 
-	public List<String> entryList = new ArrayList<String>();
+	JarFile apkJar = null;
+	Hashtable<String, JarEntry> entryList = new Hashtable<String, JarEntry>();
+
+	List<String> tmpFiles = new ArrayList<String>();
 
 	public String fuzzFindInDocument(Document doc, String tag, String attr) {
 		for (String t : TAGS) {
@@ -92,7 +92,7 @@ public class APKReader {
 		return doc;
 	}
 
-	private void extractPermissions(APKInfo info, Document doc) {
+	private void extractPermissions(ApkInfo info, Document doc) {
 		ExtractPermission(info, doc, "uses-permission", "android:name");
 		ExtractPermission(info, doc, "permission-group", "android:name");
 		ExtractPermission(info, doc, "service", "android:permission");
@@ -111,7 +111,7 @@ public class APKReader {
 		return ret;
 	}
 
-	private void extractSupportScreens(APKInfo info, Document doc) {
+	private void extractSupportScreens(ApkInfo info, Document doc) {
 		info.supportSmallScreens = readBoolean(doc, "supports-screens",
 				"android:smallScreens");
 		info.supportNormalScreens = readBoolean(doc, "supports-screens",
@@ -124,7 +124,7 @@ public class APKReader {
 			info.supportAnyDensity = false;
 	}
 
-	public APKInfo extractInfo(String fileName, APKInfo info) throws Exception {
+	public ApkInfo extractInfo(String fileName, ApkInfo info) throws Exception {
 		VER_ICN[VER_ID] = "";
 		VER_ICN[ICN_ID] = "";
 		try {
@@ -189,12 +189,11 @@ public class APKReader {
 				ByteBuffer bb = ByteBuffer.wrap(info.manifestFileBytes);
 				bb.order(ByteOrder.LITTLE_ENDIAN);
 
-				Map<String, ArrayList<String>> response = finder
-						.processResourceTable(bb, resId);
+				info.resStrings = finder.processResourceTable(bb, resId);
 
 				if (!VER_ICN[VER_ID].equals("")) {
-					ArrayList<String> versions = response.get(VER_ICN[VER_ID]
-							.toUpperCase());
+					ArrayList<String> versions = info.resStrings
+							.get(VER_ICN[VER_ID].toUpperCase());
 					if (versions != null) {
 						if (versions.size() > 0)
 							info.versionName = versions.get(0);
@@ -205,19 +204,18 @@ public class APKReader {
 					}
 				}
 
-				ArrayList<String> iconPaths = response.get(VER_ICN[ICN_ID]
-						.toUpperCase());
-				if (iconPaths != null) {
-					if (iconPaths.size() > 0)
-						// TODO For every icon in the file
-						for (String iconFileName : iconPaths) {
-							if (iconFileName != null
-									&& entryList.contains(iconFileName)) {
-								info.iconFileNameToGet = iconFileName;
-								break;
-							}
+				ArrayList<String> iconPaths = info.resStrings
+						.get(VER_ICN[ICN_ID].toUpperCase());
+				if (iconPaths != null && iconPaths.size() > 0) {
+					info.iconFileNameToGet = new ArrayList<String>();
+					for (String iconFileName : iconPaths) {
+						if (iconFileName != null
+								&& entryList.containsKey(iconFileName)) {
+							info.iconFileNameToGet.add(iconFileName);
+							info.hasIcon = true;
+							break;
 						}
-					// .get(iconPaths.size() - 1);
+					}
 				} else {
 					throw new Exception("Icon Cant Find in resource with id "
 							+ VER_ICN[ICN_ID]);
@@ -232,7 +230,7 @@ public class APKReader {
 		return info;
 	}
 
-	private void ExtractPermission(APKInfo info, Document doc, String keyName,
+	private void ExtractPermission(ApkInfo info, Document doc, String keyName,
 			String attribName) {
 		NodeList usesPermissions = doc.getElementsByTagName(keyName);
 		if (usesPermissions != null) {
@@ -266,63 +264,22 @@ public class APKReader {
 		return null;
 	}
 
-	private int extractFiles(String apkPath, APKInfo info) {
-		int errorCode = APKInfo.BAD_READ_INFO;
+	private int extractFiles(String apkPath, ApkInfo info) {
+		int errorCode = ApkInfo.BAD_READ_INFO;
 		try {
-			FileInputStream fis = new FileInputStream(apkPath);
-			ZipInputStream zis = new ZipInputStream(
-					new BufferedInputStream(fis));
 			info.manifestFileName = null;
-
-			// Generate temp files
-			if (info.iconFileName == null || info.iconFileName.length() == 0)
-				info.iconFileName = GetTempFile("apktemp_", ".png");
-
-			if (info.mfCertFileName == null
-					|| info.mfCertFileName.length() == 0)
-				info.mfCertFileName = GetTempFile("apktemp_", ".MF");
-
-			if (info.rsaCertFileName == null
-					|| info.rsaCertFileName.length() == 0)
-				info.rsaCertFileName = GetTempFile("apktemp_", ".RSA");
-
-			if (info.sfCertFileName == null
-					|| info.sfCertFileName.length() == 0)
-				info.sfCertFileName = GetTempFile("apktemp_", ".SF");
-
 			String packedXMLFile = GetTempFile("apktemp_", ".xml");
 			String unzippedXMLFile = GetTempFile("apktemp_", ".xml");
-
-			ZipEntry entry;
+			System.out.println("packedXMLFile"+packedXMLFile);
+			System.out.println("unzippedXMLFile"+unzippedXMLFile);
 			String rawXMl;
 			String xml = "";
 
-			while ((entry = zis.getNextEntry()) != null) {
-				if (info.rsaCertFileBytes == null)
-					info.rsaCertFileBytes = extractBytes(zis, entry,
-							"META-INF/", ".RSA");
-				if (info.rsaCertFileBytes == null)
-					info.rsaCertFileBytes = extractBytes(zis, entry,
-							"META-INF/", ".DSA");
-				if (info.sfCertFileBytes == null)
-					info.sfCertFileBytes = extractBytes(zis, entry,
-							"META-INF/", ".SF");
-				if (info.mfcCertFileBytes == null)
-					info.mfcCertFileBytes = extractBytes(zis, entry,
-							"META-INF/", ".MF");
-				if (info.manifestFileBytes == null)
-					info.manifestFileBytes = extractBytes(zis, entry,
-							"resources", ".arsc");
-
-				extractFile(zis, entry, "AndroidManifest.xml", packedXMLFile);
-			}
-			zis.close();
-			fis.close();
+			extractFile("AndroidManifest.xml", packedXMLFile);
 
 			// extract html
 			rawXMl = AXMLPrinter.getString(packedXMLFile);
-			File destFile = new File(unzippedXMLFile);
-			FileWriter fileToWrite = new FileWriter(destFile, true);
+			FileWriter xmlFile = new FileWriter(new File(unzippedXMLFile), true);
 
 			/* Dealing with ugly content */
 			for (String line : rawXMl.split("\n")) {
@@ -345,121 +302,113 @@ public class APKReader {
 				xml += line + "\n";
 			}
 
-			fileToWrite.write(xml);
-			fileToWrite.flush();
-			fileToWrite.close();
-			log.log(Level.INFO, "Success extract AndroidManifest.xml,"
-					+ apkPath + "," + destFile);
+			xmlFile.write(xml);
+			xmlFile.flush();
+			xmlFile.close();
+			// log.log(Level.INFO, "Success extract AndroidManifest.xml,"
+			// + apkPath + "," + unzippedXMLFile);
 			info.manifestFileName = unzippedXMLFile;
 
-			if (info.manifestFileName != null)
-				extractInfo(info.manifestFileName, info);
+			if (info.manifestFileName == null)
+				return ApkInfo.NULL_MANIFEST;
 
+			info.manifestFileBytes = extractBytes("resources.arsc");
+			extractInfo(unzippedXMLFile, info);
 			// Extract icon file
-			if (!info.hasIcon) {
-				fis = new FileInputStream(apkPath);
-				zis = new ZipInputStream(new BufferedInputStream(fis));
+			info.iconFileName = new ArrayList<String>();
+			for (String iconName : info.iconFileNameToGet)
+				info.iconFileName.add(GetTempFile(
+						"apktemp_" + iconName.hashCode() + "_", ".png"));
+			extractFile(info.iconFileNameToGet, info.iconFileName);
 
-				while ((entry = zis.getNextEntry()) != null) {
-					if (extractFile(zis, entry, info.iconFileNameToGet,
-							info.iconFileName) > 0)
-						info.hasIcon = true;
-				}
-				zis.close();
-				fis.close();
-			}
 			errorCode = info.isValid();
 		} catch (Exception e) {
 			e.printStackTrace();
-			errorCode = APKInfo.BAD_READ_INFO;
+			errorCode = ApkInfo.BAD_READ_INFO;
 		}
+
 		return errorCode;
 	}
 
-	private byte[] extractBytes(ZipInputStream zis, ZipEntry entry,
-			String nameInPackagePrefix, String nameInPackagePostFix)
+	private byte[] extractBytes(String nameInPackage)
 			throws FileNotFoundException, IOException {
-		int count, totalLength = 0;
+		int count = 0;
 		byte data[] = new byte[BUFFER];
-		byte res[] = new byte[BUFFER];
 
-		if (entry.getName().length() <= nameInPackagePostFix.length()
-				|| entry.getName().length() <= nameInPackagePrefix.length())
-			return null;
-
-		if (entry.getName().substring(0, nameInPackagePrefix.length())
-				.equals(nameInPackagePrefix)
-				&& entry.getName()
-						.substring(
-								entry.getName().length()
-										- nameInPackagePostFix.length())
-						.equals(nameInPackagePostFix)) {
-			while ((count = zis.read(data, 0, BUFFER)) != -1) {
-				totalLength += count;
-				byte tmp[] = new byte[res.length];
-				for (int i = 0; i < res.length; i++) {
-					tmp[i] = res[i];
-				}
-				res = new byte[totalLength];
-				for (int i = 0; i < totalLength; i++) {
-					if (i < (totalLength - count)) {
-						res[i] = tmp[i];
-					} else {
-						res[i] = data[i + count - totalLength];
-					}
-				}
-			}
-			return res;
-		} else
-			return null;
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		JarEntry entry = (JarEntry) apkJar.getEntry(nameInPackage);
+		InputStream is = apkJar.getInputStream(entry);
+		while ((count = is.read(data, 0, BUFFER)) != -1) {
+			output.write(data, 0, count);
+		}
+		return output.toByteArray();
 	}
 
-	private int extractFile(ZipInputStream zis, ZipEntry entry,
-			String nameInPackage, String destFile)
+	private int extractFile(List<String> nameInPackage, List<String> destFile)
 			throws FileNotFoundException, IOException {
-		BufferedOutputStream dest;
-		int count, totalLength = 0;
-		byte data[] = new byte[BUFFER];
-
-		if (entry.getName().equals(nameInPackage)) {
-			FileOutputStream fos = new FileOutputStream(destFile);
-			dest = new BufferedOutputStream(fos, BUFFER);
-			while ((count = zis.read(data, 0, BUFFER)) != -1) {
-				dest.write(data, 0, count);
-				totalLength += count;
-			}
-			dest.flush();
-			dest.close();
+		for (int i = 0; i < nameInPackage.size(); i++) {
+			JarEntry entry = (JarEntry) apkJar.getEntry(nameInPackage.get(i));
+			expandEntry(apkJar.getInputStream(entry), destFile.get(i));
 		}
+		return nameInPackage.size();
+	}
 
-		return totalLength;
+	private int extractFile(String nameInPackage, String destFile)
+			throws FileNotFoundException, IOException {
+		JarEntry entry = (JarEntry) apkJar.getEntry(nameInPackage);
+		return expandEntry(apkJar.getInputStream(entry), destFile);
+	}
+
+	protected int expandEntry(InputStream input, String name)
+			throws IOException {
+		int count = 0;
+		File file = new File(name);
+		BufferedOutputStream output = null;
+		try {
+			output = new BufferedOutputStream(new FileOutputStream(file));
+			byte buffer[] = new byte[2048];
+			while (true) {
+				int n = input.read(buffer);
+				if (n <= 0)
+					break;
+				output.write(buffer, 0, n);
+				count += n;
+			}
+		} finally {
+			if (output != null) {
+				try {
+					output.close();
+				} catch (IOException e) {
+					// Ignore
+				}
+			}
+		}
+		return count;
 	}
 
 	private String GetTempFile(String prefix, String postfix)
 			throws IOException, IllegalArgumentException, SecurityException {
-		File iconFile = File.createTempFile(prefix, postfix);
-		iconFile.delete();
-		return iconFile.getPath();
+		File tmpFile = File.createTempFile(prefix, postfix);
+//		tmpFile.delete();
+		tmpFiles.add(tmpFile.getAbsolutePath());
+		return tmpFile.getPath();
 	}
 
 	public int verifyJar(String apkPath) {
-		int ret = APKInfo.FINE;
+		int ret = ApkInfo.FINE;
 		JarFile apkJar = null;
 		try {
-			int errCode = APKInfo.FINE;
 			apkJar = new JarFile(apkPath, true);
-			if ((errCode = verifySig(apkJar)) != APKInfo.FINE)
-				ret = errCode;
-			else if (apkJar.getJarEntry("AndroidManifest.xml") == null)
-				ret = APKInfo.NULL_MANIFEST;
+			if (apkJar.getJarEntry("AndroidManifest.xml") == null)
+				ret = ApkInfo.NULL_MANIFEST;
 			else if (apkJar.getJarEntry("resources.arsc") == null)
-				ret = APKInfo.NULL_RESOURCES;
+				ret = ApkInfo.NULL_RESOURCES;
 			else if (apkJar.getJarEntry("classes.dex") == null)
-				ret = APKInfo.NULL_DEX;
+				ret = ApkInfo.NULL_DEX;
 			else if (apkJar.getJarEntry("META-INF/MANIFEST.MF") == null)
-				ret = APKInfo.NULL_METAINFO;
+				ret = ApkInfo.NULL_METAINFO;
 		} catch (Exception e) {
-			ret = APKInfo.BAD_JAR;
+			ret = ApkInfo.BAD_JAR;
 			e.printStackTrace();
 		} finally {
 			if (apkJar != null) {
@@ -475,15 +424,15 @@ public class APKReader {
 		return ret;
 	}
 
-	private int verifySig(JarFile jar) throws IOException {
-		int ret = APKInfo.FINE;
+	private int parseJar(JarFile jar) throws IOException {
+		int ret = ApkInfo.FINE;
 
 		int entryCount = 0;
 		byte[] buf = new byte[2048];
 		Enumeration<JarEntry> entries = jar.entries();
 		while (entries.hasMoreElements()) {
 			JarEntry entry = entries.nextElement();
-			entryList.add(entry.getName());
+			entryList.put(entry.getName(), entry);
 			entryCount++;
 			InputStream is = null;
 			try {
@@ -491,7 +440,7 @@ public class APKReader {
 				while ((is.read(buf)) != -1)
 					;
 			} catch (SecurityException se) {
-				ret = APKInfo.BAD_JAR;
+				ret = ApkInfo.BAD_JAR;
 				break;
 			} finally {
 				if (is != null)
@@ -502,22 +451,34 @@ public class APKReader {
 		return ret;
 	}
 
-	public int read(String apkPath, APKInfo info) {
+	public int read(String apkPath, ApkInfo info) {
 		// Verify a valid jar file
 		int errCode = verifyJar(apkPath);
-		if (!(errCode == APKInfo.FINE))
+		if (!(errCode == ApkInfo.FINE))
 			return errCode;
 
-		// Extract all file needed
-		if (info == null)
-			info = new APKInfo();
-		return extractFiles(apkPath, info);
+		try {
+			apkJar = new JarFile(apkPath);
+			if ((errCode = parseJar(apkJar)) != ApkInfo.FINE)
+				return errCode;
+			// Extract all file needed
+			if (info == null)
+				info = new ApkInfo();
+			errCode = extractFiles(apkPath, info);
+			apkJar.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			cleanup();
+		}
+		System.out.println(info);
+		return errCode;
+	}
 
-		// destFile.delete();
-		// File xmlSrc = new File(packedXMLFile);
-		// xmlSrc.delete();
-
-		// System.out.println("Read Success!");
-
+	private void cleanup() {
+		for (String tmpFile : tmpFiles) {
+			if (!(new File(tmpFile)).delete())
+				log.info("Delete failed:" + tmpFile);
+		}
 	}
 }

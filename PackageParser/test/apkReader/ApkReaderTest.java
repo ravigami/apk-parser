@@ -1,24 +1,14 @@
-package apkReader.test;
+package apkReader;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.PublicKey;
-import java.security.cert.Certificate;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
-import apkReader.APKInfo;
-import apkReader.APKReader;
+import apkReader.ApkInfo;
+import apkReader.ApkReader;
 
 public class ApkReaderTest {
 
@@ -30,8 +20,8 @@ public class ApkReaderTest {
 	public static Hashtable<Integer, List<String>> errorApks = new Hashtable<Integer, List<String>>();
 
 	public int testApk(String apkPath) {
-		APKReader apkReader = new APKReader();
-		APKInfo apkInfo = new APKInfo();
+		ApkReader apkReader = new ApkReader();
+		ApkInfo apkInfo = new ApkInfo();
 
 		int errCode = apkReader.read(apkPath, apkInfo);
 		return errCode;
@@ -58,22 +48,12 @@ public class ApkReaderTest {
 			List<String> fs = errorApks.get(errCode);
 			fs.add(file.getAbsolutePath());
 			errorApks.put(errCode, fs);
-
-			// if (APKInfo.NULL_MANIFEST == errCode || APKInfo.BAD_JAR ==
-			// errCode
-			// || APKInfo.BAD_CERT == errCode) {
-			// boolean success = (new File(file.getAbsolutePath()))
-			// .renameTo(new File(FAILED_FOLDER + file.getName()));
-			// if (!success) {
-			// System.err.println(fileName);
-			// }
-			// } else
-			if (APKInfo.FINE == errCode) {
-				boolean success = file.renameTo(new File(SUCCESS_FOLDER
-						+ file.getName() + file.getName().hashCode()));
-				if (!success) {
+			if (ApkInfo.FINE != errCode) {
+//				boolean success = file.renameTo(new File(SUCCESS_FOLDER
+//						+ file.getName() + file.getName().hashCode()));
+//				if (!success) {
 					System.err.println(fileName);
-				}
+//				}
 			}
 		}
 		printResult();

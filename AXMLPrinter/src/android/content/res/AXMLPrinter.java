@@ -32,62 +32,73 @@ import android.util.TypedValue;
  */
 public class AXMLPrinter {
 
-	public static String getString(String path) throws XmlPullParserException,
-			IOException {
+	public static String getString(String path) throws IOException {
 		String result = "";
-		AXmlResourceParser parser = new AXmlResourceParser();
-		parser.open(new FileInputStream(path));
-		StringBuilder indent = new StringBuilder(10);
-		final String indentStep = "   ";
-		while (true) {
-			int type = parser.next();
-			if (type == XmlPullParser.END_DOCUMENT) {
-				break;
-			}
-			switch (type) {
-			case XmlPullParser.START_DOCUMENT: {
-				String encoding = System.getProperty("file.encoding");
-				result += formatString("<?xml version=\"1.0\" encoding=\""
-						+ encoding + "\"?>");
-				break;
-			}
-			case XmlPullParser.START_TAG: {
-				result += formatString("%s<%s%s", indent,
-						getNamespacePrefix(parser.getPrefix()),
-						parser.getName());
-				indent.append(indentStep);
-
-				int namespaceCountBefore = parser.getNamespaceCount(parser
-						.getDepth() - 1);
-				int namespaceCount = parser
-						.getNamespaceCount(parser.getDepth());
-				for (int i = namespaceCountBefore; i != namespaceCount; ++i) {
-					result += formatString("%sxmlns:%s=\"%s\"", indent,
-							parser.getNamespacePrefix(i),
-							parser.getNamespaceUri(i));
+		FileInputStream fis=null;
+		try {
+			AXmlResourceParser parser = new AXmlResourceParser();
+			fis=new FileInputStream(path);
+			parser.open(fis);
+			StringBuilder indent = new StringBuilder(10);
+			final String indentStep = "\t";
+			while (true) {
+				int type = parser.next();
+				if (type == XmlPullParser.END_DOCUMENT) {
+					break;
 				}
-
-				for (int i = 0; i != parser.getAttributeCount(); ++i) {
-					result += formatString("%s%s%s=\"%s\"", indent,
-							getNamespacePrefix(parser.getAttributePrefix(i)),
-							parser.getAttributeName(i),
-							getAttributeValue(parser, i));
+				switch (type) {
+				case XmlPullParser.START_DOCUMENT: {
+					String encoding = System.getProperty("file.encoding");
+					result += formatString("<?xml version=\"1.0\" encoding=\""
+							+ encoding + "\"?>");
+					break;
 				}
-				result += formatString("%s>", indent);
-				break;
+				case XmlPullParser.START_TAG: {
+					result += formatString("%s<%s%s", indent,
+							getNamespacePrefix(parser.getPrefix()),
+							parser.getName());
+					indent.append(indentStep);
+
+					int namespaceCountBefore = parser.getNamespaceCount(parser
+							.getDepth() - 1);
+					int namespaceCount = parser.getNamespaceCount(parser
+							.getDepth());
+					for (int i = namespaceCountBefore; i != namespaceCount; ++i) {
+						result += formatString("%sxmlns:%s=\"%s\"", indent,
+								parser.getNamespacePrefix(i),
+								parser.getNamespaceUri(i));
+					}
+
+					for (int i = 0; i != parser.getAttributeCount(); ++i) {
+						result += formatString(
+								"%s%s%s=\"%s\"",
+								indent,
+								getNamespacePrefix(parser.getAttributePrefix(i)),
+								parser.getAttributeName(i),
+								getAttributeValue(parser, i));
+					}
+					result += formatString("%s>", indent);
+					break;
+				}
+				case XmlPullParser.END_TAG: {
+					indent.setLength(indent.length() - indentStep.length());
+					result += formatString("%s</%s%s>", indent,
+							getNamespacePrefix(parser.getPrefix()),
+							parser.getName());
+					break;
+				}
+				case XmlPullParser.TEXT: {
+					result += formatString("%s%s", indent, parser.getText());
+					break;
+				}
+				}
 			}
-			case XmlPullParser.END_TAG: {
-				indent.setLength(indent.length() - indentStep.length());
-				result += formatString("%s</%s%s>", indent,
-						getNamespacePrefix(parser.getPrefix()),
-						parser.getName());
-				break;
-			}
-			case XmlPullParser.TEXT: {
-				result += formatString("%s%s", indent, parser.getText());
-				break;
-			}
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = "";
+		}finally{
+			if(fis!=null)
+				fis.close();
 		}
 
 		return result;
