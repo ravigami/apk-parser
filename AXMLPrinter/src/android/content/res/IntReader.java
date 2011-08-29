@@ -104,13 +104,16 @@ public final class IntReader {
 	}
 	
 	public final int[] readIntArray(int length) throws IOException {
-		int[] array=new int[length];
+		int[] array;
+		array=new int[length];
 		readIntArray(array,0,length);
 		return array;
 	}
 	
 	public final void readIntArray(int[] array,int offset,int length) throws IOException {
 		for (;length>0;length-=1) {
+			if(offset>=10096)
+				System.out.println("offset:"+offset);
 			array[offset++]=readInt();
 		}
 	}

@@ -44,6 +44,7 @@ public class ApkInfo {
 	public boolean supportLargeScreens;
 	public boolean supportAnyDensity;
 	public Map<String, ArrayList<String>> resStrings;
+	public Map<String, String> layoutStrings;
 
 	public static boolean supportSmallScreen(byte[] dpi) {
 		if (dpi[0] == 1)
@@ -98,23 +99,21 @@ public class ApkInfo {
 	}
 
 	public String toString() {
-		return "versionCode\t" + versionCode + "\r\n" + "versionName\t"
+		String ret = "versionCode\t" + versionCode + "\r\n" + "versionName\t"
 				+ versionName + "\r\n" + "Permissions\t" + Permissions + "\r\n"
-				+ "iconFileName\t" + iconFileName + "\r\n"
-				+ "iconName\t" + iconFileNameToGet + "\r\n"
-				+ "supportSmallScreens\t" + supportSmallScreens + "\r\n"
-				+ "supportNormalScreens\t" + supportNormalScreens + "\r\n"
-				+ "supportLargeScreens\t" + supportLargeScreens + "\r\n"
-				+ "supportAnyDensity\t" + supportAnyDensity + "\r\n"
-				+ "hasIcon\t" + hasIcon + "\r\n"
-				+ "manifestFileName\t"+manifestFileName + "\r\n"
-				+ "resStrings\t"+resStrings.size() + "\r\n";
+				+ "iconFileName\t" + iconFileName + "\r\n" + "iconName\t"
+				+ iconFileNameToGet + "\r\n" + "manifestFileName\t"
+				+ manifestFileName + "\r\n" + "layoutStrings\t" +  ((layoutStrings == null) ? "" : String.valueOf(layoutStrings.size())) + "\r\n" 
+//				+ manifestFileName + "\r\n" + "layoutStrings\t" +  layoutStrings.keySet() + "\r\n" 
+				+ "resStrings\t" + ((resStrings == null) ? ""	: String.valueOf(resStrings.size())) + "\r\n";
+//				+ "resStrings\t" + resStrings.keySet() + "\r\n";
+		return ret;
 	}
 
 	private boolean isReference(List<String> strs) {
 		try {
 			for (String str : strs) {
-				if(isReference(str))
+				if (isReference(str))
 					return true;
 			}
 		} catch (Exception e) {
@@ -156,20 +155,20 @@ public class ApkInfo {
 			return NULL_ICON;
 		} else if (iconFileNameToGet == null) {
 			return NULL_ICON;
-//		} else if (rsaCertFileName == null) {
-//			return NULL_CERT_FILE;
-//		} else if (rsaCertFileBytes == null) {
-//			return BAD_CERT;
-//		} else if (sfCertFileName == null) {
-//			return NULL_SF_FILE;
-//		} else if (sfCertFileBytes == null) {
-//			return BAD_SF;
-//		} else if (mfCertFileName == null) {
-//			return NULL_CERT_FILE;
-//		} else if (mfcCertFileBytes == null) {
-//			return BAD_CERT;
-//		} else if (manifestFileBytes == null) {
-//			return NULL_MANIFEST;
+			// } else if (rsaCertFileName == null) {
+			// return NULL_CERT_FILE;
+			// } else if (rsaCertFileBytes == null) {
+			// return BAD_CERT;
+			// } else if (sfCertFileName == null) {
+			// return NULL_SF_FILE;
+			// } else if (sfCertFileBytes == null) {
+			// return BAD_SF;
+			// } else if (mfCertFileName == null) {
+			// return NULL_CERT_FILE;
+			// } else if (mfcCertFileBytes == null) {
+			// return BAD_CERT;
+			// } else if (manifestFileBytes == null) {
+			// return NULL_MANIFEST;
 		} else if (hasIcon == false) {
 			return NULL_ICON;
 		}

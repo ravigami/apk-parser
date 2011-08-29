@@ -1,10 +1,12 @@
 package apkReader;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -41,6 +44,8 @@ public class ApkReader {
 	private static final int VER_ID = 0;
 	private static final int ICN_ID = 1;
 	String[] VER_ICN = new String[2];
+
+	static String TMP_PREFIX = "apktemp_";
 
 	// Some possible tags and attributes
 	String[] TAGS = { "manifest", "application", "activity" };
@@ -264,14 +269,39 @@ public class ApkReader {
 		return null;
 	}
 
+	private String normalizeXml(String rawXMl) {
+		String xml = "";
+		/* Dealing with ugly content */
+		for (String line : rawXMl.split("\n")) {
+			/* Deal with invalid character & */
+			line = line.replace("&", "&amp;");
+			/* Deal with android:versionName="1.0.3.7-969a */
+			line = line.replace((char) 0, ' ');
+			/* Deal with versionName="0.1.8 "Archer"" */
+			int charCount = line.replaceAll("[^\"]", "").length();
+
+			if (charCount > 2 && !line.contains("xml version")
+					&& line.endsWith("\"")) {
+				Pattern p = Pattern.compile("(.+[\\w:=]+)\\\"(.+)\\\"");
+				Matcher m = p.matcher(line);
+				if (m.find()) {
+					line = m.group(1) + '"' + m.group(2).replace('"', '\'')
+							+ '"';
+				}
+			}
+			xml += line + "\n";
+		}
+		return xml;
+	}
+
+	static Pattern p = Pattern.compile(".+\\.xml");
+
 	private int extractFiles(String apkPath, ApkInfo info) {
 		int errorCode = ApkInfo.BAD_READ_INFO;
 		try {
 			info.manifestFileName = null;
-			String packedXMLFile = GetTempFile("apktemp_", ".xml");
-			String unzippedXMLFile = GetTempFile("apktemp_", ".xml");
-			System.out.println("packedXMLFile"+packedXMLFile);
-			System.out.println("unzippedXMLFile"+unzippedXMLFile);
+			String packedXMLFile = getTempFile("apktemp_", ".xml");
+			String unzippedXMLFile = getTempFile("apktemp_", ".xml");
 			String rawXMl;
 			String xml = "";
 
@@ -281,26 +311,7 @@ public class ApkReader {
 			rawXMl = AXMLPrinter.getString(packedXMLFile);
 			FileWriter xmlFile = new FileWriter(new File(unzippedXMLFile), true);
 
-			/* Dealing with ugly content */
-			for (String line : rawXMl.split("\n")) {
-				/* Deal with invalid character & */
-				line = line.replace("&", "&amp;");
-				/* Deal with android:versionName="1.0.3.7-969a */
-				line = line.replace((char) 0, ' ');
-				/* Deal with versionName="0.1.8 "Archer"" */
-				int charCount = line.replaceAll("[^\"]", "").length();
-
-				if (charCount > 2 && !line.contains("xml version")
-						&& line.endsWith("\"")) {
-					Pattern p = Pattern.compile("(.+[\\w:=]+)\\\"(.+)\\\"");
-					Matcher m = p.matcher(line);
-					if (m.find()) {
-						line = m.group(1) + '"' + m.group(2).replace('"', '\'')
-								+ '"';
-					}
-				}
-				xml += line + "\n";
-			}
+			xml = normalizeXml(rawXMl);
 
 			xmlFile.write(xml);
 			xmlFile.flush();
@@ -317,9 +328,12 @@ public class ApkReader {
 			// Extract icon file
 			info.iconFileName = new ArrayList<String>();
 			for (String iconName : info.iconFileNameToGet)
-				info.iconFileName.add(GetTempFile(
+				info.iconFileName.add(getTempFile(
 						"apktemp_" + iconName.hashCode() + "_", ".png"));
 			extractFile(info.iconFileNameToGet, info.iconFileName);
+
+			// Extract xml
+			info.layoutStrings = extractXmls(p);
 
 			errorCode = info.isValid();
 		} catch (Exception e) {
@@ -353,6 +367,65 @@ public class ApkReader {
 		return nameInPackage.size();
 	}
 
+	private Map<String, String> extractXmls(Pattern p) {
+		if (p == null)
+			return null;
+		Hashtable<String, String> ret = new Hashtable<String, String>();
+		Enumeration<JarEntry> entries = apkJar.entries();
+		try {
+			List<String> filesToExtract = new ArrayList<String>();
+			while (entries.hasMoreElements()) {
+				JarEntry entry = entries.nextElement();
+				if (p.matcher(entry.getName()).matches()&&!entry.getName().equals("AndroidManifest.xml")) {
+					filesToExtract.add(entry.getName());
+				}
+			}
+			for (String fileToExtract : filesToExtract) {
+				String tmpFile = getTempFile(TMP_PREFIX, "."
+						+ p.pattern().hashCode());
+				extractFile(fileToExtract, tmpFile);
+				// if()
+				String content;
+				try {
+					DocumentBuilder docBuilder;
+					Document doc = null;
+					DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
+							.newInstance();
+					docBuilder = docBuilderFactory.newDocumentBuilder();
+					doc = docBuilder.parse(new File(tmpFile));
+					doc.getDocumentElement().normalize();
+					content = doc.getTextContent();
+
+					if(content==null){
+						BufferedReader reader=new BufferedReader(new FileReader(tmpFile));
+						content="";
+						String line;
+						while((line=reader.readLine())!=null)
+							content+=line+"\r\n";
+						reader.close();
+					}
+				} catch (Exception e) {
+					content = AXMLPrinter.getString(tmpFile);
+				}
+
+				if(content==null)
+					System.err.println("Error Reading:"+fileToExtract);
+				else
+					ret.put(fileToExtract, content);
+				System.out.println(fileToExtract+","+ tmpFile);
+				// Document doc = initDoc(tmpFile);
+				// ret.put(fileToExtract, doc.getTextContent());
+				//
+				// String content=AXMLPrinter.getString(tmpFile);
+				// ret.put(fileToExtract, content);
+				// System.out.println(new String(extractBytes(fileToExtract)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
 	private int extractFile(String nameInPackage, String destFile)
 			throws FileNotFoundException, IOException {
 		JarEntry entry = (JarEntry) apkJar.getEntry(nameInPackage);
@@ -379,17 +452,17 @@ public class ApkReader {
 				try {
 					output.close();
 				} catch (IOException e) {
-					// Ignore
+					e.printStackTrace();
 				}
 			}
+			input.close();
 		}
 		return count;
 	}
 
-	private String GetTempFile(String prefix, String postfix)
+	private String getTempFile(String prefix, String postfix)
 			throws IOException, IllegalArgumentException, SecurityException {
 		File tmpFile = File.createTempFile(prefix, postfix);
-//		tmpFile.delete();
 		tmpFiles.add(tmpFile.getAbsolutePath());
 		return tmpFile.getPath();
 	}

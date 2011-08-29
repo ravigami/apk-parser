@@ -24,11 +24,14 @@ public class ApkReaderTest {
 		ApkInfo apkInfo = new ApkInfo();
 
 		int errCode = apkReader.read(apkPath, apkInfo);
+		
+		apkInfo=null;
+		apkReader=null;
 		return errCode;
 	}
 
 	public static void main(String[] args) throws IOException {
-		APK_FOLDER = "T:\\apks\\fin";
+		APK_FOLDER = "T:\\apks\\test";
 
 		for (int i = 0; i < 20; i++) {
 			errorApks.put(i, new ArrayList<String>());
@@ -45,9 +48,7 @@ public class ApkReaderTest {
 
 			errCode = test.testApk(fileName);
 
-			List<String> fs = errorApks.get(errCode);
-			fs.add(file.getAbsolutePath());
-			errorApks.put(errCode, fs);
+			errorApks.get(errCode).add(file.getAbsolutePath());
 			if (ApkInfo.FINE != errCode) {
 //				boolean success = file.renameTo(new File(SUCCESS_FOLDER
 //						+ file.getName() + file.getName().hashCode()));
