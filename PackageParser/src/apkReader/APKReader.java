@@ -387,38 +387,36 @@ public class ApkReader {
 				// if()
 				String content;
 				try {
-					DocumentBuilder docBuilder;
-					Document doc = null;
-					DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
-							.newInstance();
-					docBuilder = docBuilderFactory.newDocumentBuilder();
-					doc = docBuilder.parse(new File(tmpFile));
-					doc.getDocumentElement().normalize();
-					content = doc.getTextContent();
-
-					if(content==null){
+//					DocumentBuilder docBuilder;
+//					Document doc = null;
+//					DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
+//							.newInstance();
+//					docBuilder = docBuilderFactory.newDocumentBuilder();
+//					doc = docBuilder.parse(new File(tmpFile));
+//					doc.getDocumentElement().normalize();
+//					content = doc.getTextContent();
+//
+//					if(content==null){
 						BufferedReader reader=new BufferedReader(new FileReader(tmpFile));
 						content="";
 						String line;
+						content=reader.readLine();
+						if(!content.startsWith("<"))
+							throw new Exception();
 						while((line=reader.readLine())!=null)
 							content+=line+"\r\n";
 						reader.close();
-					}
+//					}
+						System.out.println("1"+fileToExtract+","+ tmpFile);
 				} catch (Exception e) {
 					content = AXMLPrinter.getString(tmpFile);
+					System.out.println("2"+fileToExtract+","+ tmpFile);
 				}
 
 				if(content==null)
 					System.err.println("Error Reading:"+fileToExtract);
 				else
 					ret.put(fileToExtract, content);
-				System.out.println(fileToExtract+","+ tmpFile);
-				// Document doc = initDoc(tmpFile);
-				// ret.put(fileToExtract, doc.getTextContent());
-				//
-				// String content=AXMLPrinter.getString(tmpFile);
-				// ret.put(fileToExtract, content);
-				// System.out.println(new String(extractBytes(fileToExtract)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -550,8 +548,11 @@ public class ApkReader {
 
 	private void cleanup() {
 		for (String tmpFile : tmpFiles) {
-			if (!(new File(tmpFile)).delete())
+			if (!(new File(tmpFile)).delete()){
+				(new File(tmpFile)).deleteOnExit();
 				log.info("Delete failed:" + tmpFile);
+			}
 		}
+		System.gc();
 	}
 }
