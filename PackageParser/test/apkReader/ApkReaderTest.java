@@ -2,13 +2,11 @@ package apkReader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
-
-import apkReader.ApkInfo;
-import apkReader.ApkReader;
 
 public class ApkReaderTest {
 
@@ -22,16 +20,35 @@ public class ApkReaderTest {
 	public int testApk(String apkPath) {
 		ApkReader apkReader = new ApkReader();
 		ApkInfo apkInfo = new ApkInfo();
-
+		String ret = "";
 		int errCode = apkReader.read(apkPath, apkInfo);
+		for(ArrayList<String> values:apkInfo.resStrings.values()){
+			for(String str:values){
+				if (!str.equals("0"))
+					try {
+						ret += new String(intToByteArray(str.hashCode()),
+								"utf8");
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}						
+			}
+		}
 		
 		apkInfo=null;
 		apkReader=null;
 		return errCode;
 	}
 
+	public static byte[] intToByteArray(int value) {
+		byte[] b = new byte[4];
+		for (int i = 0; i < 4; i++) {
+			int offset = (b.length - 1 - i);
+			b[i] = (byte) ((value >>> offset) & 0xff);
+		}
+		return b;
+	}
 	public static void main(String[] args) throws IOException {
-		APK_FOLDER = "T:\\apks\\fin";
+		APK_FOLDER = "/media/nfs/";
 
 		for (int i = 0; i < 20; i++) {
 			errorApks.put(i, new ArrayList<String>());

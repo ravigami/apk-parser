@@ -1,6 +1,7 @@
 package apkReader;
 
 import java.util.*;
+import java.util.jar.JarEntry;
 
 public class ApkInfo {
 
@@ -22,6 +23,11 @@ public class ApkInfo {
 	public static int NULL_FILE = 15;
 	public static int HAS_REF = 16;
 
+	public String rawAndroidManifest;
+
+	public List<String> dexClassName=new ArrayList<String>();;
+	public List<String> dexUrls=new ArrayList<String>();;
+	
 	public String versionName;
 	public String versionCode;
 	public String minSdkVersion;
@@ -30,6 +36,7 @@ public class ApkInfo {
 	public List<String> Permissions;
 	public List<String> iconFileName;
 	public List<String> iconFileNameToGet;
+	public List<String> iconHash;
 	public String rsaCertFileName;
 	public byte[] rsaCertFileBytes;
 	public String sfCertFileName;
@@ -45,6 +52,7 @@ public class ApkInfo {
 	public boolean supportAnyDensity;
 	public Map<String, ArrayList<String>> resStrings;
 	public Map<String, String> layoutStrings;
+	public Hashtable<String, JarEntry> entryList ;
 
 	public static boolean supportSmallScreen(byte[] dpi) {
 		if (dpi[0] == 1)
@@ -155,20 +163,6 @@ public class ApkInfo {
 			return NULL_ICON;
 		} else if (iconFileNameToGet == null) {
 			return NULL_ICON;
-			// } else if (rsaCertFileName == null) {
-			// return NULL_CERT_FILE;
-			// } else if (rsaCertFileBytes == null) {
-			// return BAD_CERT;
-			// } else if (sfCertFileName == null) {
-			// return NULL_SF_FILE;
-			// } else if (sfCertFileBytes == null) {
-			// return BAD_SF;
-			// } else if (mfCertFileName == null) {
-			// return NULL_CERT_FILE;
-			// } else if (mfcCertFileBytes == null) {
-			// return BAD_CERT;
-			// } else if (manifestFileBytes == null) {
-			// return NULL_MANIFEST;
 		} else if (hasIcon == false) {
 			return NULL_ICON;
 		}

@@ -309,6 +309,7 @@ public class ApkReader {
 
 			// extract html
 			rawXMl = AXMLPrinter.getString(packedXMLFile);
+			info.rawAndroidManifest = rawXMl;
 			FileWriter xmlFile = new FileWriter(new File(unzippedXMLFile), true);
 
 			xml = normalizeXml(rawXMl);
@@ -327,10 +328,14 @@ public class ApkReader {
 			extractInfo(unzippedXMLFile, info);
 			// Extract icon file
 			info.iconFileName = new ArrayList<String>();
+			info.iconHash = new ArrayList<String>();
 			for (String iconName : info.iconFileNameToGet)
 				info.iconFileName.add(getTempFile(
 						"apktemp_" + iconName.hashCode() + "_", ".png"));
 			extractFile(info.iconFileNameToGet, info.iconFileName);
+
+			for (String icon : info.iconFileName)
+				info.iconHash.add(Hash.getFileHash(icon));
 
 			// Extract xml
 			info.layoutStrings = extractXmls(p);
@@ -376,7 +381,8 @@ public class ApkReader {
 			List<String> filesToExtract = new ArrayList<String>();
 			while (entries.hasMoreElements()) {
 				JarEntry entry = entries.nextElement();
-				if (p.matcher(entry.getName()).matches()&&!entry.getName().equals("AndroidManifest.xml")) {
+				if (p.matcher(entry.getName()).matches()
+						&& !entry.getName().equals("AndroidManifest.xml")) {
 					filesToExtract.add(entry.getName());
 				}
 			}
@@ -387,34 +393,35 @@ public class ApkReader {
 				// if()
 				String content;
 				try {
-//					DocumentBuilder docBuilder;
-//					Document doc = null;
-//					DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
-//							.newInstance();
-//					docBuilder = docBuilderFactory.newDocumentBuilder();
-//					doc = docBuilder.parse(new File(tmpFile));
-//					doc.getDocumentElement().normalize();
-//					content = doc.getTextContent();
-//
-//					if(content==null){
-						BufferedReader reader=new BufferedReader(new FileReader(tmpFile));
-						content="";
-						String line;
-						content=reader.readLine();
-						if(!content.startsWith("<"))
-							throw new Exception();
-						while((line=reader.readLine())!=null)
-							content+=line+"\r\n";
-						reader.close();
-//					}
-						System.out.println("1"+fileToExtract+","+ tmpFile);
+					// DocumentBuilder docBuilder;
+					// Document doc = null;
+					// DocumentBuilderFactory docBuilderFactory =
+					// DocumentBuilderFactory
+					// .newInstance();
+					// docBuilder = docBuilderFactory.newDocumentBuilder();
+					// doc = docBuilder.parse(new File(tmpFile));
+					// doc.getDocumentElement().normalize();
+					// content = doc.getTextContent();
+					//
+					// if(content==null){
+					FileReader fr = new FileReader(tmpFile);
+					BufferedReader reader = new BufferedReader(fr);
+					content = "";
+					String line;
+					content = reader.readLine();
+					if (!content.startsWith("<"))
+						throw new Exception();
+					while ((line = reader.readLine()) != null)
+						content += line + "\r\n";
+					fr.close();
+					reader.close();
+					// }
 				} catch (Exception e) {
 					content = AXMLPrinter.getString(tmpFile);
-					System.out.println("2"+fileToExtract+","+ tmpFile);
 				}
 
-				if(content==null)
-					System.err.println("Error Reading:"+fileToExtract);
+				if (content == null)
+					System.err.println("Error Reading:" + fileToExtract);
 				else
 					ret.put(fileToExtract, content);
 			}
@@ -462,6 +469,7 @@ public class ApkReader {
 			throws IOException, IllegalArgumentException, SecurityException {
 		File tmpFile = File.createTempFile(prefix, postfix);
 		tmpFiles.add(tmpFile.getAbsolutePath());
+		tmpFile.delete();
 		return tmpFile.getPath();
 	}
 
@@ -480,7 +488,7 @@ public class ApkReader {
 				ret = ApkInfo.NULL_METAINFO;
 		} catch (Exception e) {
 			ret = ApkInfo.BAD_JAR;
-			e.printStackTrace();
+			// e.printStackTrace();
 		} finally {
 			if (apkJar != null) {
 				try {
@@ -538,21 +546,20 @@ public class ApkReader {
 			errCode = extractFiles(apkPath, info);
 			apkJar.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		} finally {
 			cleanup();
 		}
-		System.out.println(info);
+		// System.out.println(info);
 		return errCode;
 	}
 
 	private void cleanup() {
 		for (String tmpFile : tmpFiles) {
-			if (!(new File(tmpFile)).delete()){
+			if (!(new File(tmpFile)).delete()) {
 				(new File(tmpFile)).deleteOnExit();
-				log.info("Delete failed:" + tmpFile);
+//				log.info("Delete failed:" + tmpFile);
 			}
 		}
-		System.gc();
 	}
 }
