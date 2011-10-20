@@ -3,8 +3,8 @@ package apkReader;
 import java.util.*;
 import java.util.jar.JarEntry;
 
-public class ApkInfo {
 
+public class ApkInfo {
 	public static int FINE = 0;
 	public static int NULL_VERSION_CODE = 1;
 	public static int NULL_VERSION_NAME = 2;
@@ -27,7 +27,9 @@ public class ApkInfo {
 
 	public List<String> dexClassName=new ArrayList<String>();;
 	public List<String> dexUrls=new ArrayList<String>();;
-	
+
+	public String label;
+	public String fileHash;
 	public String versionName;
 	public String versionCode;
 	public String minSdkVersion;
@@ -104,6 +106,7 @@ public class ApkInfo {
 		mfCertFileName = null;
 
 		Permissions = new ArrayList<String>();
+		entryList=new Hashtable<String, JarEntry>();
 	}
 
 	public String toString() {

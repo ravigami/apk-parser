@@ -48,7 +48,7 @@ public class ApkReaderTest {
 		return b;
 	}
 	public static void main(String[] args) throws IOException {
-		APK_FOLDER = "/media/nfs/";
+		APK_FOLDER = "d:\\apktest";
 
 		for (int i = 0; i < 20; i++) {
 			errorApks.put(i, new ArrayList<String>());

@@ -43,7 +43,8 @@ public class ApkReader {
 
 	private static final int VER_ID = 0;
 	private static final int ICN_ID = 1;
-	String[] VER_ICN = new String[2];
+	private static final int LABEL_ID = 2;
+	String[] VER_ICN = new String[3];
 
 	static String TMP_PREFIX = "apktemp_";
 
@@ -132,6 +133,7 @@ public class ApkReader {
 	public ApkInfo extractInfo(String fileName, ApkInfo info) throws Exception {
 		VER_ICN[VER_ID] = "";
 		VER_ICN[ICN_ID] = "";
+		VER_ICN[LABEL_ID] = "";
 		try {
 			Document doc = initDoc(fileName);
 			if (doc == null)
@@ -150,6 +152,9 @@ public class ApkReader {
 			info.versionName = FindInDocument(doc, "manifest",
 					"android:versionName");
 			info.packageName = FindInDocument(doc, "manifest", "package");
+			info.label = FindInDocument(doc, "application", "android:label");
+			if (info.label.startsWith("@"))
+				VER_ICN[LABEL_ID] = info.label;
 
 			// Fill up the support screen field
 			extractSupportScreens(info, doc);
@@ -226,6 +231,12 @@ public class ApkReader {
 							+ VER_ICN[ICN_ID]);
 				}
 
+				if (!VER_ICN[LABEL_ID].equals("")) {
+					List<String> labels = info.resStrings.get(VER_ICN[LABEL_ID]);
+					if (labels.size() > 0) {
+						info.label = labels.get(0);
+					}
+				}
 			}
 
 		} catch (Exception e) {
@@ -299,6 +310,8 @@ public class ApkReader {
 	private int extractFiles(String apkPath, ApkInfo info) {
 		int errorCode = ApkInfo.BAD_READ_INFO;
 		try {
+			info.fileHash = Hash.getFileHash(apkPath);
+
 			info.manifestFileName = null;
 			String packedXMLFile = getTempFile("apktemp_", ".xml");
 			String unzippedXMLFile = getTempFile("apktemp_", ".xml");
@@ -540,6 +553,7 @@ public class ApkReader {
 			apkJar = new JarFile(apkPath);
 			if ((errCode = parseJar(apkJar)) != ApkInfo.FINE)
 				return errCode;
+			info.entryList = entryList;
 			// Extract all file needed
 			if (info == null)
 				info = new ApkInfo();
@@ -558,7 +572,7 @@ public class ApkReader {
 		for (String tmpFile : tmpFiles) {
 			if (!(new File(tmpFile)).delete()) {
 				(new File(tmpFile)).deleteOnExit();
-//				log.info("Delete failed:" + tmpFile);
+				// log.info("Delete failed:" + tmpFile);
 			}
 		}
 	}
