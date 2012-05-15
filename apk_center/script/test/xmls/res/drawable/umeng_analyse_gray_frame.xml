@@ -1,0 +1,15 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: shape (line=2)
+    A: android:shape(0x0101019a)=(type 0x10)0x0
+    E: padding (line=4)
+      A: android:left(0x010101ad)=(type 0x5)0x701
+      A: android:top(0x010101ae)=(type 0x5)0x701
+      A: android:right(0x010101af)=(type 0x5)0x701
+      A: android:bottom(0x010101b0)=(type 0x5)0x701
+    E: corners (line=6)
+      A: android:radius(0x010101a8)=(type 0x5)0x801
+    E: solid (line=7)
+      A: android:color(0x010101a5)=(type 0x1d)0xfff5f5f5
+    E: stroke (line=8)
+      A: android:width(0x01010159)=(type 0x5)0x301
+      A: android:color(0x010101a5)=(type 0x1d)0xff6f6f6f

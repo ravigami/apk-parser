@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/category_app_banner_icon" android:layout_width="45.0dip" android:layout_height="45.0dip" android:layout_marginLeft="19.0dip" android:layout_marginTop="17.0dip" android:src="@drawable/ic_thumbnail" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+    <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@drawable/black" android:ellipsize="marquee" android:id="@id/category_app_banner_title" android:paddingLeft="71.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:text="" android:singleLine="true" android:shadowColor="@color/shadow" />
+    <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="#fffffff1" android:gravity="center" android:id="@id/category_app_banner_summary" android:paddingLeft="71.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12.0dip" android:text="" android:singleLine="true" android:layout_toRightOf="@id/category_app_banner_icon" android:layout_below="@id/category_app_banner_title" android:layout_alignParentLeft="true" />
+</RelativeLayout>

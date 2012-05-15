@@ -1,0 +1,14 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: selector (line=3)
+    E: item (line=4)
+      A: android:state_pressed(0x010100a7)=(type 0x12)0xffffffff
+      A: android:drawable(0x01010199)=@0x7f020027
+    E: item (line=5)
+      A: android:state_focused(0x0101009c)=(type 0x12)0x0
+      A: android:drawable(0x01010199)=@0x7f020027
+    E: item (line=6)
+      A: android:state_window_focused(0x0101009d)=(type 0x12)0xffffffff
+      A: android:drawable(0x01010199)=@0x7f020027
+    E: item (line=7)
+      A: android:state_window_focused(0x0101009d)=(type 0x12)0x0
+      A: android:drawable(0x01010199)=@0x106000d

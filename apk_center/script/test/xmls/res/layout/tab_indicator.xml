@@ -1,0 +1,9 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: TextView (line=2)
+    A: android:textAppearance(0x01010034)=?0x1010042
+    A: android:textColor(0x01010098)=@0x106000b
+    A: android:gravity(0x010100af)=(type 0x11)0x11
+    A: android:layout_gravity(0x010100b3)=(type 0x11)0x10
+    A: android:id(0x010100d0)=@0x7f0b0117
+    A: android:layout_width(0x010100f4)=(type 0x10)0xffffffff
+    A: android:layout_height(0x010100f5)=(type 0x10)0xffffffff

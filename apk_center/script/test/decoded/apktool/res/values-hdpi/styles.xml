@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="IWRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:maxWidth">26.0px</item>
+        <item name="android:maxHeight">26.0px</item>
+        <item name="android:indeterminateDrawable">@drawable/ratingbar_small</item>
+        <item name="android:progressDrawable">@drawable/ratingbar_small</item>
+        <item name="android:minWidth">26.0px</item>
+        <item name="android:minHeight">26.0px</item>
+        <item name="android:thumb">@null</item>
+        <item name="android:isIndicator">true</item>
+    </style>
+    <style name="IWRatingBarLarge" parent="@android:style/Widget.RatingBar">
+        <item name="android:maxHeight">37.0px</item>
+        <item name="android:indeterminateDrawable">@drawable/ratingbar_large</item>
+        <item name="android:progressDrawable">@drawable/ratingbar_large</item>
+        <item name="android:minHeight">37.0px</item>
+        <item name="android:thumb">@null</item>
+        <item name="android:isIndicator">false</item>
+    </style>
+    <style name="IWProgressBarStar" parent="@android:style/Widget.RatingBar">
+        <item name="android:maxWidth">26.0px</item>
+        <item name="android:maxHeight">27.0px</item>
+        <item name="android:indeterminateDrawable">@drawable/progressbar_star</item>
+        <item name="android:progressDrawable">@drawable/progressbar_star</item>
+        <item name="android:minWidth">26.0px</item>
+        <item name="android:minHeight">27.0px</item>
+        <item name="android:thumb">@null</item>
+        <item name="android:isIndicator">false</item>
+    </style>
+    <style name="IWProgressBarCube" parent="@android:style/Widget.RatingBar">
+        <item name="android:maxWidth">23.0px</item>
+        <item name="android:maxHeight">27.0px</item>
+        <item name="android:indeterminateDrawable">@drawable/progressbar_cube</item>
+        <item name="android:progressDrawable">@drawable/progressbar_cube</item>
+        <item name="android:minWidth">23.0px</item>
+        <item name="android:minHeight">27.0px</item>
+        <item name="android:thumb">@null</item>
+        <item name="android:isIndicator">false</item>
+    </style>
+</resources>

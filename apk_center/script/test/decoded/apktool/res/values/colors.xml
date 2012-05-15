@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="solid_red">#ffff0000</color>
+    <color name="solid_blue">#ff0000ff</color>
+    <color name="solid_green">#ff00ff00</color>
+    <color name="solid_yellow">#ffffff00</color>
+    <color name="shadow">#00000000</color>
+    <color name="hint_foreground_light">#ff808080</color>
+    <color name="silver_grey">#ff868686</color>
+    <color name="perms_dangerous_grp_color">#ffdd6826</color>
+    <color name="perms_dangerous_perm_color">#ffdd6826</color>
+    <color name="title_background">#ff828282</color>
+    <color name="view_background">#ff1c1c1c</color>
+    <color name="loading_line">#ff003c80</color>
+    <color name="search_tag">#ff2f6aba</color>
+    <color name="comment_reply">#ff2f8a23</color>
+    <color name="list_item_background">#fff2f2f2</color>
+    <color name="toolbar_tabtitle_unselected">#ff76add5</color>
+    <color name="weekly_item_bg_color">#ffebebeb</color>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:id="@id/category_scrollview" android:scrollY="0.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <RelativeLayout android:id="@id/ddd" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <com.yingyonghui.market.widget.CategoryAppBanner android:id="@id/category_app_banner" android:background="@drawable/category_app_banner_selector" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="90.0dip" android:layout_weight="1.0" />
+            <com.yingyonghui.market.view.CategoryGridView android:id="@id/category_gridview" android:background="@android:color/black" android:visibility="visible" android:fadingEdge="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:listSelector="@null" android:numColumns="2" />
+        </RelativeLayout>
+    </ScrollView>
+    <com.yingyonghui.market.view.FullScreenLoadingView android:id="@id/category_grid_fullscreen_loading_indicator" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="@drawable/black" android:gravity="center" android:id="@id/category_gridview_empty" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/empty" />
+</merge>

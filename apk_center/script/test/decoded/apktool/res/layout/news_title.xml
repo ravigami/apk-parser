@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/news_title_bkg" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@drawable/black" android:id="@id/news_title" android:paddingRight="30.0dip" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginLeft="7.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="7.0dip" android:layout_alignParentLeft="true" />
+        <ImageView android:id="@id/news_state" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginTop="4.0dip" android:layout_marginRight="7.0dip" android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="@drawable/black" android:gravity="left" android:id="@id/news_date" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="7.0dip" android:layout_marginTop="4.0dip" android:layout_marginBottom="4.0dip" android:layout_weight="1.0" />
+        <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="@drawable/black" android:gravity="right" android:id="@id/news_visit" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginTop="4.0dip" android:layout_marginRight="10.0dip" android:layout_marginBottom="4.0dip" android:layout_weight="1.0" />
+    </LinearLayout>
+</LinearLayout>

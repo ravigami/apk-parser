@@ -1,0 +1,7 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: com.yingyonghui.market.view.FramedImageView (line=2)
+    A: android:gravity(0x010100af)=(type 0x11)0x11
+    A: android:id(0x010100d0)=@0x7f0b0068
+    A: android:layout_width(0x010100f4)=(type 0x10)0xffffffff
+    A: android:layout_height(0x010100f5)=(type 0x10)0xffffffff
+    A: android:scaleType(0x0101011d)=(type 0x10)0x1

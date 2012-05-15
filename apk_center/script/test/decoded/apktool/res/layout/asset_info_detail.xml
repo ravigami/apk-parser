@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/asset_detail_layout" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@drawable/black" android:gravity="left|center" android:id="@id/asset_info_title" android:paddingLeft="8.0dip" android:paddingTop="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:paddingLeft="8.0dip" android:paddingTop="5.0dip" android:paddingBottom="5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <ImageView android:gravity="left" android:layout_gravity="center_vertical" android:id="@id/thumbnail" android:background="@android:color/transparent" android:padding="4.0dip" android:layout_width="0.0dip" android:layout_height="62.0dip" android:src="@drawable/ic_thumbnail" android:layout_weight="0.5" />
+        <LinearLayout android:orientation="vertical" android:id="@id/detail" android:paddingLeft="10.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginRight="4.0dip" android:layout_marginBottom="3.0dip" android:layout_weight="1.0">
+            <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="#ff868686" android:id="@id/size" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-3.0dip" android:singleLine="true" />
+            <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="#ff868686" android:id="@id/version" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-3.0dip" android:singleLine="true" />
+            <RatingBar android:id="@id/rating" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:numStars="5" android:stepSize="0.5" android:isIndicator="true" style="@style/IWRatingBar" />
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:id="@id/detail" android:paddingLeft="10.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_marginTop="5.0dip" android:layout_marginRight="4.0dip" android:layout_marginBottom="3.0dip" android:layout_weight="1.5">
+            <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="#ff868686" android:id="@id/last_update" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-3.0dip" android:singleLine="true" />
+            <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="#ff868686" android:id="@id/downloads" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-3.0dip" android:singleLine="true" />
+            <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="#ff868686" android:id="@id/rating_number" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-3.0dip" android:singleLine="true" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

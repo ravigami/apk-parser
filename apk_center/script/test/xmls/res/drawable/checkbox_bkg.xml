@@ -1,0 +1,11 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: selector (line=3)
+    A: android:constantSize(0x01010196)=(type 0x12)0xffffffff
+    E: item (line=5)
+      A: android:state_checked(0x010100a0)=(type 0x12)0x0
+      A: android:drawable(0x01010199)=@0x7f020016
+    E: item (line=6)
+      A: android:state_checked(0x010100a0)=(type 0x12)0xffffffff
+      A: android:drawable(0x01010199)=@0x7f020015
+    E: item (line=7)
+      A: android:drawable(0x01010199)=@0x7f020016

@@ -1,0 +1,17 @@
+package: com.yingyonghui.market
+uses-permission: android.permission.INTERNET
+uses-permission: android.permission.INSTALL_PACKAGES
+uses-permission: android.permission.DELETE_PACKAGES
+uses-permission: android.permission.WRITE_EXTERNAL_STORAGE
+uses-permission: android.permission.READ_PHONE_STATE
+uses-permission: android.permission.READ_LOGS
+uses-permission: android.permission.ACCESS_WIFI_STATE
+uses-permission: android.permission.ACCESS_NETWORK_STATE
+uses-permission: android.permission.RECEIVE_BOOT_COMPLETED
+uses-permission: android.permission.GET_PACKAGE_SIZE
+uses-permission: android.permission.WAKE_LOCK
+uses-permission: com.android.launcher.permission.INSTALL_SHORTCUT
+uses-permission: com.android.launcher.permission.READ_SETTINGS
+uses-permission: com.htc.launcher.permission.READ_SETTINGS
+uses-permission: android.permission.RECORD_AUDIO
+uses-permission: android.permission.GET_TASKS

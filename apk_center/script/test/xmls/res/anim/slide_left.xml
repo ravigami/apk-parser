@@ -1,0 +1,7 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: set (line=3)
+    A: android:interpolator(0x01010141)=@0x10a0005
+    E: translate (line=5)
+      A: android:duration(0x01010198)=@0x10e0002
+      A: android:fromXDelta(0x010101c6)=(type 0x6)0x101
+      A: android:toXDelta(0x010101c7)=(type 0x4)0x0

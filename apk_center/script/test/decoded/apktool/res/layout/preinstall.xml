@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:layout_width="fill_parent" android:layout_height="52.0dip" layout="@layout/asset_info_header_preinstall" />
+    <FrameLayout android:gravity="top|center" android:background="@android:color/white" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+        <include android:layout_width="fill_parent" android:layout_height="fill_parent" layout="@layout/asset_list" />
+    </FrameLayout>
+    <LinearLayout android:layout_gravity="bottom" android:orientation="horizontal" android:id="@id/info_buttons_bar" android:background="@drawable/list_header_bar" android:paddingLeft="2.0dip" android:paddingTop="2.0dip" android:paddingRight="2.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <View android:id="@id/buttons_spacer_left" android:visibility="visible" android:layout_width="0.0dip" android:layout_height="0.0dip" android:layout_weight="0.5" />
+        <Button android:textAppearance="?android:textAppearanceMedium" android:textColor="@android:color/white" android:layout_gravity="center_vertical" android:id="@id/selectallbutton" android:background="@drawable/toolbar_button_left" android:paddingBottom="10.0dip" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/select_all" android:layout_weight="1.0" />
+        <Button android:textAppearance="?android:textAppearanceMedium" android:textColor="@android:color/white" android:layout_gravity="center_vertical" android:id="@id/selectnonebutton" android:background="@drawable/toolbar_button_left" android:paddingBottom="10.0dip" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/select_none" android:layout_weight="1.0" />
+        <Button android:textAppearance="?android:textAppearanceMedium" android:textColor="@android:color/black" android:layout_gravity="center_vertical" android:id="@id/installbutton" android:background="@drawable/toolbar_button_big" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/download" android:layout_weight="1.0" />
+        <View android:id="@id/buttons_spacer_right" android:visibility="visible" android:layout_width="0.0dip" android:layout_height="0.0dip" android:layout_weight="0.5" />
+    </LinearLayout>
+</LinearLayout>

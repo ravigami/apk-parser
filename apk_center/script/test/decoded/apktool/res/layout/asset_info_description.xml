@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/asset_info_description" android:background="@android:color/white" android:paddingLeft="12.0dip" android:paddingTop="13.0dip" android:paddingRight="12.0dip" android:paddingBottom="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@android:color/black" android:id="@id/info_description" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentLeft="true" />
+    <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="@color/hint_foreground_light" android:id="@id/info_version_size" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/info_description" android:layout_alignParentLeft="true" />
+    <FrameLayout android:gravity="center" android:orientation="horizontal" android:id="@id/info_screenshot_th_layout_portraits" android:paddingTop="10.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/info_version_size">
+        <include layout="@layout/asset_info_screenshort" />
+    </FrameLayout>
+</RelativeLayout>

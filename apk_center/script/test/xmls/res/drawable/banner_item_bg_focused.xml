@@ -1,0 +1,7 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: shape (line=2)
+    E: solid (line=3)
+      A: android:color(0x010101a5)=(type 0x1d)0xffffffff
+    E: stroke (line=4)
+      A: android:width(0x01010159)=(type 0x5)0x401
+      A: android:color(0x010101a5)=(type 0x1d)0xfffda71c

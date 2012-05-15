@@ -1,0 +1,4 @@
+export APKLIB_TOOL=/media/apkdata/scripts
+export APKLIB_APK=/media/apkdata/apklib/apk
+export APKLIB_ERR=/media/apkdata/apklib/err
+export APKLIB_TMP=/media/apkdata/apklib/tmp

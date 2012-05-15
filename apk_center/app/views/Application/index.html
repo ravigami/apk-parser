@@ -1,0 +1,18 @@
+#{extends 'main.html' /}
+#{set title:'Upload a apk' /}
+
+Check similarity
+<p>
+<form action="@{Application.checkSimilarity()}" method="GET">
+    <input type="text" name="hash1" /> 
+    <input type="text" name="hash2" /> 
+    <input type="submit" value="Check" />
+</form>    
+<p> 
+
+Upload apk
+<p> 
+#{form @uploadApk(), enctype:'multipart/form-data'}
+    <input type="file" id="apk" name="apk" />
+    <input type="submit" value="Send" />
+#{/}

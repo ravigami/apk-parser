@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/category_asset_item" android:layout_width="fill_parent" android:layout_height="80.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/category_item_icon" android:padding="4.0dip" android:layout_width="50.0dip" android:layout_height="50.0dip" android:layout_marginLeft="18.0dip" android:layout_marginTop="8.0dip" android:src="@drawable/ic_thumbnail" android:layout_alignParentLeft="true" />
+    <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@drawable/black" android:ellipsize="marquee" android:id="@id/category_item_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:text="" android:singleLine="true" android:shadowColor="@color/shadow" android:layout_toRightOf="@id/category_item_icon" android:layout_centerVertical="true" />
+    <TextView android:textColor="#ff868686" android:id="@id/category_item_intro" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="2.0dip" android:text="" android:singleLine="true" android:layout_below="@id/category_item_icon" android:layout_alignLeft="@id/category_item_icon" />
+    <ImageView android:id="@id/category_item_vertialbar_right" android:visibility="gone" android:layout_width="0.5dip" android:layout_height="50.0dip" android:src="@drawable/vertical_bar" android:scaleType="fitXY" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+    <ImageView android:id="@id/category_item_vertialbar_left" android:visibility="gone" android:layout_width="0.5dip" android:layout_height="50.0dip" android:src="@drawable/vertical_bar" android:scaleType="fitXY" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+    <ImageView android:id="@id/category_item_bottomline" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/category_item_bottomline" android:scaleType="fitXY" android:layout_alignParentBottom="true" />
+</RelativeLayout>

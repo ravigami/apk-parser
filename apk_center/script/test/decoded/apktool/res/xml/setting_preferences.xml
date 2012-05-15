@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/icons_settings">
+        <CheckBoxPreference android:title="@string/display_icons" android:key="checkbox_display_icons" android:defaultValue="true" android:summaryOn="@string/display_icons_on" android:summaryOff="@string/display_icons_off" />
+        <CheckBoxPreference android:title="@string/buffer_icons" android:key="checkbox_buffer_icons" android:dependency="checkbox_display_icons" android:defaultValue="true" android:summaryOn="@string/buffer_icons_on" android:summaryOff="@string/buffer_icons_off" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/download_settings">
+        <CheckBoxPreference android:title="@string/allow_without_wifi" android:key="checkbox_allow_without_wifi" android:defaultValue="true" android:summaryOn="@string/allow_without_wifi_on" android:summaryOff="@string/allow_without_wifi_off" />
+        <ListPreference android:entries="@array/entries_list_app_limit" android:title="@string/app_limit" android:key="list_app_limit" android:summary="@string/app_limit_summary" android:dependency="checkbox_allow_without_wifi" android:defaultValue="5" android:dialogTitle="@string/app_limit" android:entryValues="@array/entriesvalue_list_app_limit" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/screen_lock">
+        <CheckBoxPreference android:title="@string/screen_lock" android:key="checkbox_screen_lock" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/notification_setting">
+        <CheckBoxPreference android:title="@string/update_notification_setting_title" android:key="ignore_app_update_notification" android:defaultValue="true" android:summaryOn="@string/update_notification_setting_on_msg" android:summaryOff="@string/update_notification_setting_off_msg" />
+        <CheckBoxPreference android:title="@string/weekly_notification_setting_title" android:key="ignore_weekly_update_notification" android:defaultValue="true" android:summaryOn="@string/weekly_notification_setting_on_msg" android:summaryOff="@string/weekly_notification_setting_off_msg" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/app_trace_setting">
+        <CheckBoxPreference android:title="@string/app_trace_setting_title" android:key="checkbox_allow_app_trace" android:defaultValue="true" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/data_clean">
+        <com.yingyonghui.market.model.DialogExPreference android:title="@string/data_clean2" android:key="data_clean" android:summary="@string/data_clean_summary" android:widgetLayout="@layout/nothing" android:dialogTitle="@string/data_clean" android:dialogMessage="@string/data_clean_dialog_message" android:positiveButtonText="@string/ok" android:negativeButtonText="@string/cancel" />
+    </PreferenceCategory>
+</PreferenceScreen>

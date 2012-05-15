@@ -1,0 +1,11 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: layer-list (line=2)
+    E: item (line=3)
+      A: android:id(0x010100d0)=@0x1020000
+      A: android:drawable(0x01010199)=@0x7f02008c
+    E: item (line=6)
+      A: android:id(0x010100d0)=@0x102000f
+      A: android:drawable(0x01010199)=@0x7f02008c
+    E: item (line=9)
+      A: android:id(0x010100d0)=@0x102000d
+      A: android:drawable(0x01010199)=@0x7f02008f

@@ -1,0 +1,7 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: selector (line=2)
+    E: item (line=3)
+      A: android:state_pressed(0x010100a7)=(type 0x12)0xffffffff
+      A: android:drawable(0x01010199)=@0x7f020027
+    E: item (line=4)
+      A: android:drawable(0x01010199)=@0x7f080010

@@ -1,0 +1,10 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: shape (line=2)
+    A: android:shape(0x0101019a)=(type 0x10)0x0
+    E: gradient (line=4)
+      A: android:startColor(0x0101019d)=(type 0x1d)0xff0085e0
+      A: android:endColor(0x0101019e)=(type 0x1d)0xff79bfee
+      A: android:angle(0x010101a0)=(type 0x4)0x42b40000
+      A: android:type(0x010101a1)=(type 0x10)0x0
+    E: corners (line=6)
+      A: android:radius(0x010101a8)=(type 0x5)0x801

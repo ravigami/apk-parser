@@ -1,0 +1,7 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: set (line=17)
+    E: translate (line=18)
+      A: android:duration(0x01010198)=(type 0x10)0x2710
+      A: android:repeatCount(0x010101bf)=(type 0x10)0xffffffff
+      A: android:fromXDelta(0x010101c6)=(type 0x4)0x0
+      A: android:toXDelta(0x010101c7)=(type 0x6)0x101

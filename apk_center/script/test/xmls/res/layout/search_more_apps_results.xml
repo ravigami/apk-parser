@@ -1,0 +1,14 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: LinearLayout (line=2)
+    A: android:orientation(0x010100c4)=(type 0x10)0x1
+    A: android:background(0x010100d4)=@0x7f0200d8
+    A: android:layout_width(0x010100f4)=(type 0x10)0xffffffff
+    A: android:layout_height(0x010100f5)=(type 0x10)0xffffffff
+    E: include (line=6)
+      A: android:layout_width(0x010100f4)=(type 0x10)0xffffffff
+      A: android:layout_height(0x010100f5)=(type 0x10)0xfffffffe
+      A: layout=@0x7f03000b (Raw: "@layout/asset_info_header")
+    E: include (line=10)
+      A: android:layout_width(0x010100f4)=(type 0x10)0xffffffff
+      A: android:layout_height(0x010100f5)=(type 0x10)0xffffffff
+      A: layout=@0x7f030011 (Raw: "@layout/asset_list")

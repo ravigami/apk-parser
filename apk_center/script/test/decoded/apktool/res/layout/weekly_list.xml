@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/weekly_item_bg_color" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:layout_width="fill_parent" android:layout_height="46.0dip" layout="@layout/weekly_list_header" />
+    <FrameLayout android:background="@drawable/weekly_item_bg_color" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <GridView android:id="@id/weekly_gridview" android:visibility="gone" android:fadingEdge="none" android:layout_width="fill_parent" android:layout_height="fill_parent" android:listSelector="@null" android:cacheColorHint="@android:color/transparent" android:numColumns="2" />
+        <com.yingyonghui.market.view.FullScreenLoadingView android:id="@id/weekly_list_fullscreen_loading_indicator" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="@drawable/black" android:gravity="center" android:id="@id/weekly_gridview_empty" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/empty" />
+    </FrameLayout>
+</LinearLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:layout_width="fill_parent" android:layout_height="52.0dip" layout="@layout/asset_info_header_preinstall" />
+    <LinearLayout android:gravity="top|center" android:background="@android:color/white" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+        <WebView android:gravity="top|center" android:id="@id/events_detail" android:background="@android:color/white" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1.0" />
+        <com.yingyonghui.market.view.FullScreenLoadingView android:id="@id/news_event_detail_activity_fullscreen_loading_indicator" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="@drawable/black" android:gravity="center" android:id="@id/webview_empty" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/empty" />
+    </LinearLayout>
+</LinearLayout>

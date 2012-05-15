@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@android:color/white" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:myspace="http://schemas.android.com/apk/res/com.yingyonghui.market">
+    <include android:layout_width="fill_parent" android:layout_height="46.0dip" layout="@layout/weekly_header" />
+    <FrameLayout android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <ScrollView android:id="@id/weekly_scrollview" android:scrollbars="none" android:fadingEdge="none" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+                <com.yingyonghui.market.view.WeeklyItemView android:gravity="center" android:id="@id/weekly_item_1" android:layout_width="fill_parent" android:layout_height="95.0dip" />
+                <com.yingyonghui.market.view.WeeklyItemView android:gravity="center" android:id="@id/weekly_item_2" android:layout_width="fill_parent" android:layout_height="95.0dip" />
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="315.0dip">
+                    <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="2.0">
+                        <com.yingyonghui.market.view.WeeklyItemView android:id="@id/weekly_item_3" android:layout_width="fill_parent" android:layout_height="105.0dip" />
+                        <com.yingyonghui.market.view.WeeklyItemView android:id="@id/weekly_item_4" android:layout_width="fill_parent" android:layout_height="105.0dip" />
+                        <com.yingyonghui.market.view.WeeklyItemView android:id="@id/weekly_item_5" android:layout_width="fill_parent" android:layout_height="105.0dip" />
+                    </LinearLayout>
+                    <LinearLayout android:orientation="vertical" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+                        <com.yingyonghui.market.view.WeeklyItemView android:id="@id/weekly_item_6" android:layout_width="fill_parent" android:layout_height="105.0dip" />
+                        <com.yingyonghui.market.view.WeeklyItemView android:id="@id/weekly_item_7" android:layout_width="fill_parent" android:layout_height="210.0dip" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="105.0dip">
+                    <com.yingyonghui.market.view.WeeklyItemView android:id="@id/weekly_item_8" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+                    <com.yingyonghui.market.view.WeeklyItemView android:id="@id/weekly_item_9" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+                </LinearLayout>
+                <ListView android:id="@id/weekly_list" android:fadingEdge="none" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+            </LinearLayout>
+        </ScrollView>
+        <com.yingyonghui.market.view.FullScreenLoadingView android:id="@id/weekly_fullscreen_loading_indicator" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="@drawable/black" android:gravity="center" android:id="@id/weekly_content_empty" android:background="@color/weekly_item_bg_color" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/empty" />
+    </FrameLayout>
+</LinearLayout>

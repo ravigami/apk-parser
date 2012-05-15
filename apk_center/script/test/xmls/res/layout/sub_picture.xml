@@ -1,0 +1,7 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: ImageView (line=2)
+    A: android:id(0x010100d0)=@0x7f0b0114
+    A: android:paddingTop(0x010100d7)=(type 0x5)0x401
+    A: android:paddingBottom(0x010100d9)=(type 0x5)0x2801
+    A: android:layout_width(0x010100f4)=(type 0x10)0xfffffffe
+    A: android:layout_height(0x010100f5)=(type 0x10)0xfffffffe

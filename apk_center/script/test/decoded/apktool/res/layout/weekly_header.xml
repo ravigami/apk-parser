@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:gravity="center" android:id="@id/weekly_header" android:background="@drawable/list_header_bar" android:layout_width="fill_parent" android:layout_height="52.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@android:color/white" android:gravity="center" android:id="@id/weekly_title" android:layout_width="fill_parent" android:layout_height="45.0dip" android:text="@string/weekly_title" android:singleLine="true" />
+    <ImageButton android:gravity="center" android:id="@id/weekly_back_btn" android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:src="@drawable/icon_back" android:layout_alignParentLeft="true" />
+</RelativeLayout>

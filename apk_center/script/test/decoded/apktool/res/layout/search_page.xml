@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@id/search_page" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:id="@id/search_scroll" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical" android:id="@id/search_tags" android:background="@drawable/list_view_bkg" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <include android:layout_width="fill_parent" android:layout_height="wrap_content" layout="@layout/daily_top_header" />
+            <include android:layout_width="fill_parent" android:layout_height="wrap_content" layout="@layout/week_top_header" />
+        </LinearLayout>
+    </ScrollView>
+    <com.yingyonghui.market.view.FullScreenLoadingView android:id="@id/search_apge_fullscreen_loading_indicator" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+</LinearLayout>

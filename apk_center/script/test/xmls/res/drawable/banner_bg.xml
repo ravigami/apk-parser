@@ -1,0 +1,4 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: bitmap (line=2)
+    A: android:src(0x01010119)=@0x7f020006
+    A: android:tileMode(0x01010201)=(type 0x10)0x1

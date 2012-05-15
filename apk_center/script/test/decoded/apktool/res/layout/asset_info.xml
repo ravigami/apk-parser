@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/list_view_bkg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <include android:layout_width="fill_parent" android:layout_height="46.0dip" layout="@layout/asset_info_header" />
+    <LinearLayout android:orientation="vertical" android:id="@id/asset_info_page" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="1.0">
+        <LinearLayout android:orientation="vertical" android:id="@id/download_status_container" android:background="@drawable/list_view_bkg" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="#ff484848" android:gravity="center_vertical" android:id="@id/download_indicator" android:background="@drawable/split_bar_bg" android:paddingLeft="8.0dip" android:paddingBottom="3.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="@string/downloading" />
+            <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <ProgressBar android:id="@id/download_progress_bar" android:paddingLeft="8.0dip" android:paddingTop="15.0dip" android:paddingRight="8.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:max="100" style="@style/DownloadProgressBar" />
+                <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="#ff484848" android:id="@id/download_status" android:paddingLeft="8.0dip" android:paddingTop="3.0dip" android:paddingBottom="10.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/downloading" />
+            </LinearLayout>
+        </LinearLayout>
+        <TabHost android:id="@android:id/tabhost" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <FrameLayout android:gravity="top|center" android:id="@android:id/tabcontent" android:paddingTop="44.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+            <TabWidget android:gravity="center" android:id="@android:id/tabs" android:background="@drawable/header_item_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="4.0dip" android:layout_marginBottom="4.0dip" />
+        </TabHost>
+    </LinearLayout>
+    <com.yingyonghui.market.view.FullScreenLoadingView android:id="@id/asset_info_fullscreen_loading_indicator" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    <LinearLayout android:layout_gravity="bottom" android:orientation="horizontal" android:id="@id/info_buttons_bar" android:background="@drawable/toolbar_bkg" android:paddingLeft="4.0dip" android:paddingTop="2.0dip" android:paddingRight="4.0dip" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="60.0dip">
+        <View android:id="@id/buttons_spacer_left" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="0.5" />
+        <Button android:id="@id/launchbutton" android:visibility="gone" android:text="@string/launch" style="@style/InfoBarPrimaryButton" />
+        <Button android:id="@id/downloadbutton" android:visibility="gone" android:text="@string/download" style="@style/InfoBarPrimaryButton" />
+        <Button android:id="@id/updatebutton" android:visibility="gone" android:text="@string/update" style="@style/InfoBarPrimaryButton" />
+        <Button android:id="@id/selectbutton" android:visibility="gone" android:text="@string/select" style="@style/InfoBarPrimaryButton" />
+        <Button android:id="@id/installbutton" android:visibility="gone" android:text="@string/install" style="@style/InfoBarPrimaryButton" />
+        <Button android:id="@id/dummybutton" android:background="@android:color/transparent" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="0.4" />
+        <Button android:id="@id/uninstallbutton" android:visibility="gone" android:text="@string/uninstall" style="@style/InfoBarSecondaryButton" />
+        <Button android:id="@id/canceldownloadbutton" android:visibility="gone" android:text="@string/pausedownload" style="@style/InfoBarSecondaryButton" />
+        <Button android:id="@id/installingbutton" android:visibility="gone" android:text="@string/installing" style="@style/InfoBarSecondaryButton" />
+        <Button android:id="@id/unselectbutton" android:visibility="gone" android:text="@string/unselect" style="@style/InfoBarSecondaryButton" />
+        <Button android:id="@id/dummybutton1" android:background="@android:color/transparent" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="0.4" />
+        <Button android:id="@id/reportErrorbutton" android:visibility="gone" android:text="@string/report_error" style="@style/InfoBarSecondaryButton" />
+        <Button android:id="@id/feedbackbutton" android:visibility="gone" android:text="@string/feedback" style="@style/InfoBarSecondaryButton" />
+        <View android:id="@id/buttons_spacer_right" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="0.5" />
+    </LinearLayout>
+</LinearLayout>

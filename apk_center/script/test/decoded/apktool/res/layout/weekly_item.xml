@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/weekly_item_layoutview" android:background="@drawable/weekly_item_bg_color" android:padding="1.5dip" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:gravity="center" android:id="@id/weekly_item_img" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="centerCrop" />
+    <TextView android:textColor="@android:color/white" android:gravity="center_vertical" android:id="@id/weekly_item_name" android:background="@drawable/weekly_item_title_bg" android:paddingLeft="6.0dip" android:layout_width="fill_parent" android:layout_height="26.0dip" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true" />
+</RelativeLayout>

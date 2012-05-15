@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textAppearance="?android:textAppearanceLarge" android:textColor="@android:color/white" android:gravity="top|center" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" android:text="@string/exit_dlg_title" />
+    <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@drawable/black" android:gravity="center_horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="25.0dip" android:layout_marginBottom="25.0dip" android:text="@string/exit_dlg_msg" />
+    <LinearLayout android:orientation="horizontal" android:paddingBottom="16.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:background="@android:color/transparent" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
+        <Button android:textAppearance="?android:textAppearanceMedium" android:textColor="@android:color/black" android:gravity="center" android:id="@id/okButton" android:background="@drawable/list_download_button" android:layout_width="115.0dip" android:layout_height="wrap_content" android:text="@string/ok" />
+        <TextView android:background="@android:color/transparent" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
+        <Button android:textAppearance="?android:textAppearanceMedium" android:textColor="@android:color/black" android:gravity="center" android:id="@id/cancelButton" android:background="@drawable/list_download_button" android:layout_width="115.0dip" android:layout_height="wrap_content" android:text="@string/cancel" />
+        <TextView android:background="@android:color/transparent" android:layout_width="0.0dip" android:layout_height="wrap_content" android:layout_weight="1.0" />
+    </LinearLayout>
+</LinearLayout>

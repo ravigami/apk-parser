@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@drawable/white" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:padding="6.0px" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_toRightOf="@id/cut_off_left">
+        <ImageView android:id="@id/app_icon" android:layout_width="45.0dip" android:layout_height="45.0dip" android:src="@drawable/ic_thumbnail" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+        <TextView android:textAppearance="?android:textAppearanceSmall" android:textColor="@drawable/black" android:ellipsize="end" android:id="@id/app_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0px" android:layout_marginTop="5.0px" android:singleLine="true" android:layout_toRightOf="@id/app_icon" android:layout_alignTop="@id/app_icon" />
+        <TextView android:textSize="10.0dip" android:textColor="#ff868686" android:ellipsize="end" android:id="@id/app_count" android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true" android:layout_below="@id/app_name" android:layout_alignLeft="@id/app_name" />
+    </RelativeLayout>
+    <LinearLayout android:id="@id/cut_off_line" android:background="@drawable/cut_off_line_color" android:layout_width="fill_parent" android:layout_height="1.0px" android:layout_marginLeft="15.0px" android:layout_marginRight="15.0px" android:layout_alignParentBottom="true" />
+</RelativeLayout>

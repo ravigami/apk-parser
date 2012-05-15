@@ -1,0 +1,10 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: set (line=2)
+    E: translate (line=3)
+      A: android:duration(0x01010198)=(type 0x10)0x1f4
+      A: android:fromXDelta(0x010101c6)=(type 0x6)0xffffff01
+      A: android:toXDelta(0x010101c7)=(type 0x4)0x0
+    E: alpha (line=5)
+      A: android:duration(0x01010198)=(type 0x10)0x1f4
+      A: android:fromAlpha(0x010101ca)=(type 0x4)0x3dcccccd
+      A: android:toAlpha(0x010101cb)=(type 0x4)0x3f800000

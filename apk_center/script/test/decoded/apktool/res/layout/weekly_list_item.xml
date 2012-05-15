@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/weekly_list_item_layout" android:background="@android:color/white" android:layout_width="fill_parent" android:layout_height="150.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:id="@id/weekly_list_item_img" android:layout_width="97.0dip" android:layout_height="97.0dip" android:layout_marginTop="10.0dip" android:src="@drawable/weekly_list_item_defimg" android:layout_alignParentTop="true" android:layout_centerHorizontal="true" />
+    <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@drawable/black" android:ellipsize="marquee" android:gravity="center" android:id="@id/weekly_list_item_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:text="2011-11-05期周报" android:singleLine="true" android:shadowColor="@color/shadow" android:layout_below="@id/weekly_list_item_img" />
+    <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/category_item_bottomline" android:scaleType="fitXY" android:layout_alignParentBottom="true" />
+</RelativeLayout>

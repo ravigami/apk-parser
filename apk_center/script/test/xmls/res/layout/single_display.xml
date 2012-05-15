@@ -1,0 +1,16 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: LinearLayout (line=2)
+    A: android:orientation(0x010100c4)=(type 0x10)0x1
+    A: android:layout_width(0x010100f4)=(type 0x10)0xffffffff
+    A: android:layout_height(0x010100f5)=(type 0x10)0xfffffffe
+    E: TextView (line=7)
+      A: android:textSize(0x01010095)=(type 0x5)0xf03
+      A: android:textColor(0x01010098)=@0x7f0200da
+      A: android:id(0x010100d0)=@0x7f0b0103
+      A: android:layout_width(0x010100f4)=(type 0x10)0xffffffff
+      A: android:layout_height(0x010100f5)=(type 0x10)0xfffffffe
+    E: ImageView (line=14)
+      A: android:gravity(0x010100af)=(type 0x11)0x3
+      A: android:id(0x010100d0)=@0x7f0b0104
+      A: android:layout_width(0x010100f4)=(type 0x10)0xffffffff
+      A: android:layout_height(0x010100f5)=(type 0x10)0xfffffffe

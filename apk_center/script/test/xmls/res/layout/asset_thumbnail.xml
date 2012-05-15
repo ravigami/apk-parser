@@ -1,0 +1,12 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: FrameLayout (line=2)
+    A: android:background(0x010100d4)=@0x106000d
+    A: android:layout_width(0x010100f4)=(type 0x5)0x5601
+    A: android:layout_height(0x010100f5)=(type 0x5)0x5601
+    N: android=http://schemas.android.com/apk/res/android
+      E: ImageView (line=5)
+        A: android:layout_gravity(0x010100b3)=(type 0x11)0x11
+        A: android:id(0x010100d0)=@0x7f0b0040
+        A: android:layout_width(0x010100f4)=(type 0x5)0x3a01
+        A: android:layout_height(0x010100f5)=(type 0x5)0x3a01
+        A: android:scaleType(0x0101011d)=(type 0x10)0x3

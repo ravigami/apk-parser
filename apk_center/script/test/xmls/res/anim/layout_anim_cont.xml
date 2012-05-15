@@ -1,0 +1,4 @@
+N: android=http://schemas.android.com/apk/res/android
+  E: layoutAnimation (line=2)
+    A: android:delay(0x010101cc)=(type 0x4)0x0
+    A: android:animation(0x010101cd)=@0x7f040001
